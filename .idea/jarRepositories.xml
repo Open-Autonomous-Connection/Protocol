@@ -2,9 +2,34 @@
 <project version="4">
   <component name="RemoteRepositoriesConfiguration">
     <remote-repository>
+      <option name="id" value="central" />
+      <option name="name" value="Central Repository" />
+      <option name="url" value="https://repo.maven.apache.org/maven2" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="github" />
+      <option name="name" value="github" />
+      <option name="url" value="https://maven.pkg.github.com/unlegitdqrk/networksystem" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="github" />
+      <option name="name" value="github" />
+      <option name="url" value="https://maven.pkg.github.com/open-autonomous-connection/*" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="github" />
+      <option name="name" value="github" />
+      <option name="url" value="https://maven.pkg.github.com/unlegitdqrk" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="github" />
       <option name="name" value="github" />
       <option name="url" value="https://maven.pkg.github.com/unlegitdqrk/*" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="open-autonomous-connection" />
+      <option name="name" value="open-autonomous-connection" />
+      <option name="url" value="https://maven.pkg.github.com/open-autonomous-connection/*" />
     </remote-repository>
     <remote-repository>
       <option name="id" value="central" />
@@ -12,14 +37,49 @@
       <option name="url" value="https://repo1.maven.org/maven2" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="central" />
+      <option name="name" value="central" />
+      <option name="url" value="https://repo1.maven.org/maven2" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="open-autonomous-connection" />
+      <option name="name" value="open-autonomous-connection" />
+      <option name="url" value="https://maven.pkg.github.com/open-autonomous-connection" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="unlegitdqrk" />
+      <option name="name" value="unlegitdqrk" />
+      <option name="url" value="https://maven.pkg.github.com/unlegitdqrk" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="github" />
+      <option name="name" value="github" />
+      <option name="url" value="https://maven.pkg.github.com/unlegitdqrk/stuffutils" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="unlegitdqrk" />
+      <option name="name" value="unlegitdqrk" />
+      <option name="url" value="https://maven.pkg.github.com/unlegitdqrk/*" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="github" />
+      <option name="name" value="github" />
+      <option name="url" value="https://maven.pkg.github.com/unlegitdqrk/networkutils" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="unlegitdqrk" />
+      <option name="name" value="unlegitdqrk" />
+      <option name="url" value="https://maven.pkg.github.com/unlegitdqrk/eventsystem" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="jboss.community" />
       <option name="name" value="JBoss Community repository" />
       <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
     </remote-repository>
     <remote-repository>
-      <option name="id" value="central" />
-      <option name="name" value="central" />
-      <option name="url" value="https://repo1.maven.org/maven2" />
+      <option name="id" value="github" />
+      <option name="name" value="github" />
+      <option name="url" value="https://maven.pkg.github.com/unlegitdqrk/eventsystem" />
     </remote-repository>
   </component>
 </project>
