@@ -10,6 +10,7 @@ package me.openautonomousconnection.protocol.side;
 
 import me.finn.unlegitlibrary.network.system.client.NetworkClient;
 import me.openautonomousconnection.protocol.ProtocolBridge;
+import me.openautonomousconnection.protocol.domain.Domain;
 import me.openautonomousconnection.protocol.domain.RequestDomain;
 import me.openautonomousconnection.protocol.listeners.ClientListener;
 import me.openautonomousconnection.protocol.listeners.ServerListener;
@@ -24,7 +25,7 @@ public abstract class ProtocolClient {
     private NetworkClient client;
     private ProtocolBridge protocolBridge;
     
-    public abstract void handleHTMLContent(SiteType siteType, String htmlContent);
+    public abstract void handleHTMLContent(SiteType siteType, Domain domain, String htmlContent);
     public abstract void handleMessage(String message);
 
     public final NetworkClient getClient() {
