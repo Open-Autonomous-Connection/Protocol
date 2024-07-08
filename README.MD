@@ -22,7 +22,7 @@ Discord: https://discord.gg/ef8cyW4t7p
 ```
 <dependency>
     <groupId>me.openautonomousconnection.protocol</groupId>
-    <artifactId>Protocol</artifactId>
+    <artifactId>protocol</artifactId>
     <version>1.0.0</version>
     <scope>compile</scope>
 </dependency>
