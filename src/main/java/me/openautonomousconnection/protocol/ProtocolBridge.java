@@ -11,6 +11,9 @@ package me.openautonomousconnection.protocol;
 import me.finn.unlegitlibrary.network.system.client.NetworkClient;
 import me.openautonomousconnection.protocol.listeners.ClientListener;
 import me.openautonomousconnection.protocol.listeners.ServerListener;
+import me.openautonomousconnection.protocol.packets.v1_0_0.DomainPacket;
+import me.openautonomousconnection.protocol.packets.v1_0_0.MessagePacket;
+import me.openautonomousconnection.protocol.packets.v1_0_0.PingPacket;
 import me.openautonomousconnection.protocol.side.ProtocolClient;
 import me.openautonomousconnection.protocol.side.ProtocolServer;
 import me.openautonomousconnection.protocol.utils.APIInformation;
@@ -51,8 +54,12 @@ public class ProtocolBridge {
         return protocolVersion;
     }
 
-    public ProtocolBridge(ProtocolVersion protocolVersion, ProtocolSettings protocolSettings, ProtocolClient protocolClient, APIInformation apiInformation) {
+    public ProtocolBridge(ProtocolVersion protocolVersion, ProtocolSettings protocolSettings, ProtocolClient protocolClient, APIInformation apiInformation) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         checkUpdates();
+
+        protocolSettings.packetHandler.registerPacket(DomainPacket.class);
+        protocolSettings.packetHandler.registerPacket(PingPacket.class);
+        protocolSettings.packetHandler.registerPacket(MessagePacket.class);
 
         this.protocolServer = null;
 
@@ -62,8 +69,12 @@ public class ProtocolBridge {
         this.protocolClient = protocolClient;
     }
 
-    public ProtocolBridge(ProtocolVersion protocolVersion, ProtocolSettings protocolSettings, ProtocolClient protocolClient) {
+    public ProtocolBridge(ProtocolVersion protocolVersion, ProtocolSettings protocolSettings, ProtocolClient protocolClient) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         checkUpdates();
+
+        protocolSettings.packetHandler.registerPacket(DomainPacket.class);
+        protocolSettings.packetHandler.registerPacket(PingPacket.class);
+        protocolSettings.packetHandler.registerPacket(MessagePacket.class);
 
         this.protocolServer = null;
 
@@ -73,8 +84,12 @@ public class ProtocolBridge {
         this.protocolClient = protocolClient;
     }
 
-    public ProtocolBridge(ProtocolVersion protocolVersion, ProtocolSettings protocolSettings, ProtocolServer protocolServer) {
+    public ProtocolBridge(ProtocolVersion protocolVersion, ProtocolSettings protocolSettings, ProtocolServer protocolServer) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         checkUpdates();
+
+        protocolSettings.packetHandler.registerPacket(DomainPacket.class);
+        protocolSettings.packetHandler.registerPacket(PingPacket.class);
+        protocolSettings.packetHandler.registerPacket(MessagePacket.class);
 
         this.apiInformation = null;
         this.protocolClient = null;
@@ -95,17 +110,17 @@ public class ProtocolBridge {
 
             if (!version.equalsIgnoreCase(Files.readString(new File("version.txt").toPath()))) {
                 System.out.println();
-                System.out.println("===============================================");
-                System.out.println("IMPORTANT: A NEW VERSION IS PUBLISHED ON GITHUB");
-                System.out.println("===============================================");
+                System.out.println("========================================================");
+                System.out.println("IMPORTANT: A NEW PROTOCOL VERSION IS PUBLISHED ON GITHUB");
+                System.out.println("========================================================");
                 System.out.println();
             }
         } catch (IOException exception) {
             System.out.println();
-            System.out.println("===============================================");
-            System.out.println("IMPORTANT: VERSION CHECK COULD NOT COMPLETED! VISIT OUR GITHUB");
-            System.out.println("https://github.com/Open-Autonomous-Connection");
-            System.out.println("===============================================");
+            System.out.println("=======================================================================");
+            System.out.println("IMPORTANT: PROTOCOL VERSION CHECK COULD NOT COMPLETED! VISIT OUR GITHUB");
+            System.out.println("             https://github.com/Open-Autonomous-Connection             ");
+            System.out.println("=======================================================================");
             System.out.println();
         }
     }
