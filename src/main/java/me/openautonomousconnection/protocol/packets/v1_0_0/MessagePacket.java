@@ -58,7 +58,6 @@ public class MessagePacket extends Packet {
             String message = objectInputStream.readUTF();
             protocolVersion = (ProtocolVersion) objectInputStream.readObject();
 
-            if (clientID != ProtocolBridge.getInstance().getProtocolClient().getClient().getClientID()) return;
             ProtocolBridge.getInstance().getProtocolClient().handleMessage(message);
         }
     }

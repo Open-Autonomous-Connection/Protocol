@@ -11,6 +11,8 @@ package me.openautonomousconnection.protocol.listeners;
 import me.finn.unlegitlibrary.event.EventListener;
 import me.finn.unlegitlibrary.event.Listener;
 import me.openautonomousconnection.protocol.ProtocolBridge;
+import me.openautonomousconnection.protocol.domain.Domain;
+import me.openautonomousconnection.protocol.domain.LocalDomain;
 import me.openautonomousconnection.protocol.events.v1_0_0.DomainPacketReceivedEvent;
 import me.openautonomousconnection.protocol.events.v1_0_0.PingPacketReceivedEvent;
 import me.openautonomousconnection.protocol.packets.v1_0_0.PingPacket;
@@ -34,9 +36,9 @@ public class ClientListener extends EventListener {
                 ProtocolBridge.getInstance().getProtocolClient().getClient().
                         sendPacket(new PingPacket(event.requestDomain, event.domain, false));
             } catch (IOException | ClassNotFoundException exception) {
-                ProtocolBridge.getInstance().getProtocolClient().handleHTMLContent(SiteType.LOCAL, null, WebsitesContent.ERROR_OCCURRED(exception.getMessage()));
+                ProtocolBridge.getInstance().getProtocolClient().handleHTMLContent(SiteType.LOCAL, new LocalDomain("error-occurred", "html"), WebsitesContent.ERROR_OCCURRED(exception.getMessage()));
             }
-        } else ProtocolBridge.getInstance().getProtocolClient().handleHTMLContent(SiteType.LOCAL, null, WebsitesContent.DOMAIN_NOT_FOUND);
+        } else ProtocolBridge.getInstance().getProtocolClient().handleHTMLContent(SiteType.LOCAL, new LocalDomain("domain-not-found", "html"), WebsitesContent.DOMAIN_NOT_FOUND);
     }
 
     @Listener
@@ -55,9 +57,9 @@ public class ClientListener extends EventListener {
 
                 ProtocolBridge.getInstance().getProtocolClient().handleHTMLContent(SiteType.PUBLIC, event.domain, content.toString());
             } catch (IOException exception) {
-                ProtocolBridge.getInstance().getProtocolClient().handleHTMLContent(SiteType.LOCAL, null, WebsitesContent.ERROR_OCCURRED(exception.getMessage()));
+                ProtocolBridge.getInstance().getProtocolClient().handleHTMLContent(SiteType.LOCAL, new LocalDomain("domain-not-found", "html"), WebsitesContent.ERROR_OCCURRED(exception.getMessage()));
             }
-        } else ProtocolBridge.getInstance().getProtocolClient().handleHTMLContent(SiteType.LOCAL, null, WebsitesContent.DOMAIN_NOT_REACHABLE);
+        } else ProtocolBridge.getInstance().getProtocolClient().handleHTMLContent(SiteType.LOCAL, new LocalDomain("error-not-reached", "html"), WebsitesContent.DOMAIN_NOT_REACHABLE);
     }
 
     @Override

@@ -67,6 +67,7 @@ public class DomainPacket extends Packet {
                 exception.printStackTrace();
             }
 
+            ProtocolBridge.getInstance().getProtocolServer().getServer().getEventManager().executeEvent(new DomainPacketReceivedEvent(protocolVersion, domain, requestDomain));
             ProtocolBridge.getInstance().getProtocolServer().getServer().getClientHandlerByID(clientID).sendPacket(new DomainPacket(requestDomain, domain));
         } else {
             clientID = objectInputStream.readInt();
@@ -74,7 +75,6 @@ public class DomainPacket extends Packet {
             domain = (Domain) objectInputStream.readObject();
             protocolVersion = (ProtocolVersion) objectInputStream.readObject();
 
-            if (clientID != ProtocolBridge.getInstance().getProtocolClient().getClient().getClientID()) return;
             ProtocolBridge.getInstance().getProtocolClient().getClient().getEventManager().executeEvent(new DomainPacketReceivedEvent(protocolVersion, domain, requestDomain));
         }
     }

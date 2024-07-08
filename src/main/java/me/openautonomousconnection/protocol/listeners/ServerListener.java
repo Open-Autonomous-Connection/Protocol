@@ -11,8 +11,11 @@ package me.openautonomousconnection.protocol.listeners;
 import me.finn.unlegitlibrary.event.EventListener;
 import me.finn.unlegitlibrary.event.Listener;
 import me.finn.unlegitlibrary.network.system.server.events.server.S_StartedEvent;
+import me.openautonomousconnection.protocol.events.v1_0_0.DomainPacketReceivedEvent;
+import me.openautonomousconnection.protocol.events.v1_0_0.PingPacketReceivedEvent;
 
 public class ServerListener extends EventListener {
+
     @Override
     protected final Object clone() throws CloneNotSupportedException {
         return super.clone();
