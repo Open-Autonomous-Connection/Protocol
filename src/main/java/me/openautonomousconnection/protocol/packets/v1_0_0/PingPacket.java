@@ -21,17 +21,15 @@ import java.io.ObjectOutputStream;
 import java.sql.SQLException;
 
 public class PingPacket extends Packet {
-    private ProtocolBridge protocolBridge;
     private RequestDomain requestDomain;
     private Domain domain;
     private int clientID;
     private boolean reachable;
     private ProtocolVersion protocolVersion;
 
-    public PingPacket(ProtocolBridge protocolBridge, RequestDomain requestDomain, Domain domain, boolean reachable) {
+    public PingPacket(RequestDomain requestDomain, Domain domain, boolean reachable) {
         this();
 
-        this.protocolBridge = protocolBridge;
         this.requestDomain = requestDomain;
         this.domain = domain;
         this.reachable = reachable;
@@ -43,15 +41,15 @@ public class PingPacket extends Packet {
 
     @Override
     public void write(ObjectOutputStream objectOutputStream) throws IOException, ClassNotFoundException {
-        protocolVersion = protocolBridge.getProtocolVersion();
+        protocolVersion = ProtocolBridge.getInstance().getProtocolVersion();
 
-        if (protocolBridge.isRunningAsServer()) {
+        if (ProtocolBridge.getInstance().isRunningAsServer()) {
             objectOutputStream.writeInt(clientID);
             objectOutputStream.writeObject(requestDomain);
             objectOutputStream.writeObject(domain);
             objectOutputStream.writeBoolean(reachable);
         } else {
-            clientID = protocolBridge.getProtocolClient().getClient().getClientID();
+            clientID = ProtocolBridge.getInstance().getProtocolClient().getClient().getClientID();
             objectOutputStream.writeInt(clientID);
             objectOutputStream.writeObject(requestDomain);
         }
@@ -61,19 +59,19 @@ public class PingPacket extends Packet {
 
     @Override
     public void read(ObjectInputStream objectInputStream) throws IOException, ClassNotFoundException {
-        if (protocolBridge.isRunningAsServer()) {
+        if (ProtocolBridge.getInstance().isRunningAsServer()) {
             clientID = objectInputStream.readInt();
             requestDomain = (RequestDomain) objectInputStream.readObject();
             protocolVersion = (ProtocolVersion) objectInputStream.readObject();
 
             try {
-                domain = protocolBridge.getProtocolServer().ping(requestDomain);
+                domain = ProtocolBridge.getInstance().getProtocolServer().ping(requestDomain);
             } catch (SQLException exception) {
                 exception.printStackTrace();
             }
 
             reachable = domain != null;
-            protocolBridge.getProtocolServer().getServer().getClientHandlerByID(clientID).sendPacket(new PingPacket(protocolBridge, requestDomain, domain, reachable));
+            ProtocolBridge.getInstance().getProtocolServer().getServer().getClientHandlerByID(clientID).sendPacket(new PingPacket(requestDomain, domain, reachable));
         } else {
             clientID = objectInputStream.readInt();
             requestDomain = (RequestDomain) objectInputStream.readObject();
@@ -81,8 +79,8 @@ public class PingPacket extends Packet {
             boolean reachable = objectInputStream.readBoolean();
             protocolVersion = (ProtocolVersion) objectInputStream.readObject();
 
-            if (clientID != protocolBridge.getProtocolClient().getClient().getClientID()) return;
-            protocolBridge.getProtocolClient().getClient().getEventManager().executeEvent(new PingPacketReceivedEvent(protocolBridge, protocolVersion, domain, requestDomain, reachable));
+            if (clientID != ProtocolBridge.getInstance().getProtocolClient().getClient().getClientID()) return;
+            ProtocolBridge.getInstance().getProtocolClient().getClient().getEventManager().executeEvent(new PingPacketReceivedEvent(protocolVersion, domain, requestDomain, reachable));
         }
     }
 

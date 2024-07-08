@@ -18,13 +18,11 @@ import me.openautonomousconnection.protocol.packets.v1_0_0.DomainPacket;
 
 public class DomainPacketReceivedEvent extends Event {
 
-    public final ProtocolBridge protocolBridge;
     public final ProtocolVersion protocolVersion;
     public final Domain domain;
     public final RequestDomain requestDomain;
 
-    public DomainPacketReceivedEvent(ProtocolBridge protocolBridge, ProtocolVersion protocolVersion, Domain domain, RequestDomain requestDomain) {
-        this.protocolBridge = protocolBridge;
+    public DomainPacketReceivedEvent(ProtocolVersion protocolVersion, Domain domain, RequestDomain requestDomain) {
         this.protocolVersion = protocolVersion;
         this.domain = domain;
         this.requestDomain = requestDomain;

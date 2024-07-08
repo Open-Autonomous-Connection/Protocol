@@ -16,14 +16,12 @@ import me.openautonomousconnection.protocol.domain.RequestDomain;
 
 public class PingPacketReceivedEvent extends Event {
 
-    public final ProtocolBridge protocolBridge;
     public final ProtocolVersion protocolVersion;
     public final Domain domain;
     public final RequestDomain requestDomain;
     public final boolean reachable;
 
-    public PingPacketReceivedEvent(ProtocolBridge protocolBridge, ProtocolVersion protocolVersion, Domain domain, RequestDomain requestDomain, boolean reachable) {
-        this.protocolBridge = protocolBridge;
+    public PingPacketReceivedEvent(ProtocolVersion protocolVersion, Domain domain, RequestDomain requestDomain, boolean reachable) {
         this.protocolVersion = protocolVersion;
         this.domain = domain;
         this.requestDomain = requestDomain;

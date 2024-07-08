@@ -55,8 +55,15 @@ public class ProtocolBridge extends DefaultMethodsOverrider {
         return protocolVersion;
     }
 
+    private static ProtocolBridge instance;
+
+    public static ProtocolBridge getInstance() {
+        return instance;
+    }
+
     public ProtocolBridge(ProtocolVersion protocolVersion, ProtocolSettings protocolSettings, ProtocolClient protocolClient, APIInformation apiInformation) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         checkUpdates();
+        instance = this;
 
         protocolSettings.packetHandler.registerPacket(DomainPacket.class);
         protocolSettings.packetHandler.registerPacket(PingPacket.class);
@@ -72,6 +79,7 @@ public class ProtocolBridge extends DefaultMethodsOverrider {
 
     public ProtocolBridge(ProtocolVersion protocolVersion, ProtocolSettings protocolSettings, ProtocolClient protocolClient) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         checkUpdates();
+        instance = this;
 
         protocolSettings.packetHandler.registerPacket(DomainPacket.class);
         protocolSettings.packetHandler.registerPacket(PingPacket.class);
@@ -87,6 +95,7 @@ public class ProtocolBridge extends DefaultMethodsOverrider {
 
     public ProtocolBridge(ProtocolVersion protocolVersion, ProtocolSettings protocolSettings, ProtocolServer protocolServer) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         checkUpdates();
+        instance = this;
 
         protocolSettings.packetHandler.registerPacket(DomainPacket.class);
         protocolSettings.packetHandler.registerPacket(PingPacket.class);
