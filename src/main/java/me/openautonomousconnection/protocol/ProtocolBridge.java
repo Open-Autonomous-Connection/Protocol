@@ -75,7 +75,7 @@ public class ProtocolBridge {
 
     private final void checkUpdates() {
         try {
-            URL oracle = new URL("https://raw.githubusercontent.com/Open-Autonomous-Connection/protocol/master/src/resources/version.txt");
+            URL oracle = new URL("https://raw.githubusercontent.com/Open-Autonomous-Connection/Protocol/master/src/main/java/me/openautonomousconnection/protocol/version.txt");
 
             BufferedReader in = new BufferedReader(new InputStreamReader(oracle.openStream()));
             String version = "";
