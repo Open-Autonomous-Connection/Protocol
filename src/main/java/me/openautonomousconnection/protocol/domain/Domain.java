@@ -8,7 +8,7 @@
 
 package me.openautonomousconnection.protocol.domain;
 
-import me.openautonomousconnection.protocol.Utils;
+import me.openautonomousconnection.protocol.utils.DomainUtils;
 
 import java.io.Serializable;
 
@@ -31,8 +31,8 @@ public class Domain implements Serializable {
         if (destination.toLowerCase().startsWith("https://github.com/")) {
 
             String base = "https://raw.githubusercontent.com/";
-            String username = Utils.getPath(destination).split("/")[0];
-            String site = Utils.getPath(destination).split("/")[1];
+            String username = DomainUtils.getPath(destination).split("/")[0];
+            String site = DomainUtils.getPath(destination).split("/")[1];
 
             return base + username + "/" + site + "/main/index.html";
         }

@@ -6,14 +6,14 @@
  * See LICENSE-File if exists
  */
 
-package me.openautonomousconnection.protocol;
+package me.openautonomousconnection.protocol.utils;
 
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-public class Utils {
+public class DomainUtils {
 
     public static String getTopLevelDomain(String url) throws MalformedURLException {
         URL uri = null;

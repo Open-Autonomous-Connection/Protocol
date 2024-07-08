@@ -6,7 +6,7 @@
  * See LICENSE-File if exists
  */
 
-package me.openautonomousconnection.protocol;
+package me.openautonomousconnection.protocol.utils;
 
 import java.io.Serializable;
 
