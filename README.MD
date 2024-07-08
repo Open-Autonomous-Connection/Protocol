@@ -15,6 +15,7 @@ Discord: https://discord.gg/ef8cyW4t7p
 - Path
 - Fragments
 - Query
+- PHP & JavaScript support
 
 # Maven
 ### pom.xml
