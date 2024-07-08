@@ -35,7 +35,7 @@ public abstract class ProtocolServer extends DefaultMethodsOverrider {
         this.protocolBridge = protocolBridge;
 
         server = new NetworkServer.ServerBuilder()
-                .enableAutoRestart().enableDebugLog()
+                .enableDebugLog()
                 .setEventManager(protocolBridge.getProtocolSettings().eventManager).setPacketHandler(protocolBridge.getProtocolSettings().packetHandler)
                 .setMaxAttempts(10).setAttemptDelayInSeconds(1)
                 .setPort(protocolBridge.getProtocolSettings().port).build();

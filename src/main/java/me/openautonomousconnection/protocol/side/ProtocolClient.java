@@ -41,7 +41,7 @@ public abstract class ProtocolClient extends DefaultMethodsOverrider {
         this.protocolBridge = protocolBridge;
 
         client = new NetworkClient.ClientBuilder()
-                .enableDebugLog().enableAutoReconnect()
+                .enableDebugLog()
                 .setEventManager(protocolBridge.getProtocolSettings().eventManager).setPacketHandler(protocolBridge.getProtocolSettings().packetHandler)
                 .setMaxAttempts(10).setAttemptDelayInSeconds(1)
                 .setPort(protocolBridge.getProtocolSettings().port).setHost(protocolBridge.getProtocolSettings().host).
