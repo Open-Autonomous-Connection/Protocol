@@ -58,4 +58,24 @@ public class ClientListener extends EventListener {
             }
         } else event.protocolBridge.getProtocolClient().handleHTMLContent(SiteType.LOCAL, null, WebsitesContent.DOMAIN_NOT_REACHABLE);
     }
+
+    @Override
+    protected final Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+
+    @Override
+    public final boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    @Override
+    public final String toString() {
+        return super.toString();
+    }
+
+    @Override
+    public final int hashCode() {
+        return super.hashCode();
+    }
 }

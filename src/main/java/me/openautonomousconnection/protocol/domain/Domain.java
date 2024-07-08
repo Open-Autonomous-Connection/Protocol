@@ -39,4 +39,26 @@ public class Domain implements Serializable {
 
         return destination;
     }
+
+    @Override
+    protected final Object clone() throws CloneNotSupportedException {
+        return new Domain(name, topLevelDomain, destination);
+    }
+
+    @Override
+    public final boolean equals(Object obj) {
+        if (!(obj instanceof Domain)) return false;
+        Domain other = (Domain) obj;
+        return other.name.equalsIgnoreCase(name) && other.topLevelDomain.equalsIgnoreCase(topLevelDomain);
+    }
+
+    @Override
+    public final String toString() {
+        return name + "." + topLevelDomain;
+    }
+
+    @Override
+    public final int hashCode() {
+        return super.hashCode();
+    }
 }

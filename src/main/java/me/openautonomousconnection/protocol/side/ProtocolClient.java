@@ -9,6 +9,7 @@
 package me.openautonomousconnection.protocol.side;
 
 import me.finn.unlegitlibrary.network.system.client.NetworkClient;
+import me.finn.unlegitlibrary.utils.DefaultMethodsOverrider;
 import me.openautonomousconnection.protocol.ProtocolBridge;
 import me.openautonomousconnection.protocol.domain.Domain;
 import me.openautonomousconnection.protocol.domain.RequestDomain;
@@ -20,7 +21,7 @@ import me.openautonomousconnection.protocol.utils.SiteType;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
-public abstract class ProtocolClient {
+public abstract class ProtocolClient extends DefaultMethodsOverrider {
 
     private NetworkClient client;
     private ProtocolBridge protocolBridge;

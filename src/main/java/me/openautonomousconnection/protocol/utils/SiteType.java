@@ -8,7 +8,9 @@
 
 package me.openautonomousconnection.protocol.utils;
 
-public enum SiteType {
+import java.io.Serializable;
+
+public enum SiteType implements Serializable {
     LOCAL("oac-local"), PUBLIC("oac");
     ;
 

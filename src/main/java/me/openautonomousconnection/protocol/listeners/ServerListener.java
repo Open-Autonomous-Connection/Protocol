@@ -13,5 +13,23 @@ import me.finn.unlegitlibrary.event.Listener;
 import me.finn.unlegitlibrary.network.system.server.events.server.S_StartedEvent;
 
 public class ServerListener extends EventListener {
+    @Override
+    protected final Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 
+    @Override
+    public final boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    @Override
+    public final String toString() {
+        return super.toString();
+    }
+
+    @Override
+    public final int hashCode() {
+        return super.hashCode();
+    }
 }

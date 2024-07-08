@@ -9,6 +9,7 @@
 package me.openautonomousconnection.protocol.side;
 
 import me.finn.unlegitlibrary.network.system.server.NetworkServer;
+import me.finn.unlegitlibrary.utils.DefaultMethodsOverrider;
 import me.openautonomousconnection.protocol.ProtocolBridge;
 import me.openautonomousconnection.protocol.domain.Domain;
 import me.openautonomousconnection.protocol.domain.RequestDomain;
@@ -22,7 +23,7 @@ import java.net.UnknownHostException;
 import java.sql.SQLException;
 import java.util.List;
 
-public abstract class ProtocolServer {
+public abstract class ProtocolServer extends DefaultMethodsOverrider {
     public abstract List<Domain> getDomains() throws SQLException;
     public abstract void handleMessage(int clientID, String message);
 

@@ -8,7 +8,9 @@
 
 package me.openautonomousconnection.protocol;
 
-public enum ProtocolVersion {
+import java.io.Serializable;
+
+public enum ProtocolVersion implements Serializable {
     PV_1_0_0("1.0.0");
     ;
     public final String version;

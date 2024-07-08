@@ -8,9 +8,11 @@
 
 package me.openautonomousconnection.protocol.utils;
 
+import me.finn.unlegitlibrary.utils.DefaultMethodsOverrider;
+
 import java.io.Serializable;
 
-public class APIInformation implements Serializable {
+public class APIInformation extends DefaultMethodsOverrider implements Serializable {
     public final String username;
     public final String apiApplication;
     public final String apiKey;

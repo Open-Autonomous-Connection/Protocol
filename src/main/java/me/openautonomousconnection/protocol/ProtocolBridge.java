@@ -9,6 +9,7 @@
 package me.openautonomousconnection.protocol;
 
 import me.finn.unlegitlibrary.network.system.client.NetworkClient;
+import me.finn.unlegitlibrary.utils.DefaultMethodsOverrider;
 import me.openautonomousconnection.protocol.listeners.ClientListener;
 import me.openautonomousconnection.protocol.listeners.ServerListener;
 import me.openautonomousconnection.protocol.packets.v1_0_0.DomainPacket;
@@ -26,7 +27,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.nio.file.Files;
 
-public class ProtocolBridge {
+public class ProtocolBridge extends DefaultMethodsOverrider {
     private final APIInformation apiInformation;
     private final ProtocolSettings protocolSettings;
     private final ProtocolVersion protocolVersion;

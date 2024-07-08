@@ -64,4 +64,24 @@ public class MessagePacket extends Packet {
             protocolBridge.getProtocolClient().handleMessage(message);
         }
     }
+
+    @Override
+    protected final Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+
+    @Override
+    public final boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    @Override
+    public final String toString() {
+        return super.toString();
+    }
+
+    @Override
+    public final int hashCode() {
+        return super.hashCode();
+    }
 }

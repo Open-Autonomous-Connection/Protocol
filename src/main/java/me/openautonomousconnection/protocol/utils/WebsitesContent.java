@@ -8,7 +8,9 @@
 
 package me.openautonomousconnection.protocol.utils;
 
-public class WebsitesContent {
+import me.finn.unlegitlibrary.utils.DefaultMethodsOverrider;
+
+public class WebsitesContent extends DefaultMethodsOverrider {
 
     public static final String DOMAIN_NOT_FOUND = """
             <html>
