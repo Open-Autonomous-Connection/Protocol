@@ -10,16 +10,21 @@ package me.openautonomousconnection.protocol.side;
 
 import me.finn.unlegitlibrary.network.system.client.NetworkClient;
 import me.openautonomousconnection.protocol.ProtocolBridge;
+import me.openautonomousconnection.protocol.domain.RequestDomain;
 import me.openautonomousconnection.protocol.listeners.ClientListener;
 import me.openautonomousconnection.protocol.listeners.ServerListener;
+import me.openautonomousconnection.protocol.packets.v1_0_0.DomainPacket;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
-public class ProtocolClient {
+public abstract class ProtocolClient {
 
     private NetworkClient client;
     private ProtocolBridge protocolBridge;
+    
+    public abstract void handleHTMLContent(String htmlContent);
+    public abstract void handleMessage(String message);
 
     public final NetworkClient getClient() {
         return client;
@@ -29,7 +34,7 @@ public class ProtocolClient {
         return protocolBridge;
     }
 
-    public ProtocolClient(ProtocolBridge protocolBridge) {
+    public final void setProtocolBridge(ProtocolBridge protocolBridge) {
         this.protocolBridge = protocolBridge;
 
         client = new NetworkClient.ClientBuilder()
@@ -50,5 +55,11 @@ public class ProtocolClient {
     public final void disconnectClient() throws IOException {
         client.getEventManager().unregisterListener(ClientListener.class);
         client.disconnect();
+    }
+    
+    public final void resolveSite(RequestDomain requestDomain) throws IOException, ClassNotFoundException {
+        if (!client.isConnected()) return;
+        
+        client.sendPacket(new DomainPacket(protocolBridge, requestDomain, null));
     }
 }

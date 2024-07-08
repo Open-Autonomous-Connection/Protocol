@@ -62,6 +62,17 @@ public class ProtocolBridge {
         this.protocolClient = protocolClient;
     }
 
+    public ProtocolBridge(ProtocolVersion protocolVersion, ProtocolSettings protocolSettings, ProtocolClient protocolClient) {
+        checkUpdates();
+
+        this.protocolServer = null;
+
+        this.protocolVersion = protocolVersion;
+        this.protocolSettings = protocolSettings;
+        this.apiInformation = null;
+        this.protocolClient = protocolClient;
+    }
+
     public ProtocolBridge(ProtocolVersion protocolVersion, ProtocolSettings protocolSettings, ProtocolServer protocolServer) {
         checkUpdates();
 

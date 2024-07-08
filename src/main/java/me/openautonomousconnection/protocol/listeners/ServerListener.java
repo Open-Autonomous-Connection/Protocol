@@ -14,9 +14,4 @@ import me.finn.unlegitlibrary.network.system.server.events.server.S_StartedEvent
 
 public class ServerListener extends EventListener {
 
-    @Listener
-    public void onServerStarted(S_StartedEvent event) {
-
-    }
-
 }

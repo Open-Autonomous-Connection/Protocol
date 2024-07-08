@@ -24,14 +24,13 @@ import java.util.List;
 
 public abstract class ProtocolServer {
     public abstract List<Domain> getDomains() throws SQLException;
-    public abstract boolean domainExists(RequestDomain domain) throws SQLException;
+    public abstract void handleMessage(int clientID, String message);
 
     private final int timeoutInSeconds;
     private NetworkServer server;
     private ProtocolBridge protocolBridge;
 
-    public ProtocolServer(ProtocolBridge protocolBridge, int timeoutInSeconds) throws IOException, InterruptedException {
-        this.timeoutInSeconds = timeoutInSeconds;
+    public final void setProtocolBridge(ProtocolBridge protocolBridge) {
         this.protocolBridge = protocolBridge;
 
         server = new NetworkServer.ServerBuilder()
@@ -39,7 +38,10 @@ public abstract class ProtocolServer {
                 .setEventManager(protocolBridge.getProtocolSettings().eventManager).setPacketHandler(protocolBridge.getProtocolSettings().packetHandler)
                 .setMaxAttempts(10).setAttemptDelayInSeconds(1)
                 .setPort(protocolBridge.getProtocolSettings().port).build();
+    }
 
+    public ProtocolServer(int timeoutInSeconds) throws IOException, InterruptedException {
+        this.timeoutInSeconds = timeoutInSeconds;
     }
 
     public final ProtocolBridge getProtocolBridge() {
@@ -82,6 +84,10 @@ public abstract class ProtocolServer {
         }
 
         return domain;
+    }
+
+    public final boolean domainExists(RequestDomain domain) throws SQLException {
+        return getDomain(domain) != null;
     }
 
     public final boolean domainExists(Domain domain) throws SQLException {
