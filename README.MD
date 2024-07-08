@@ -44,6 +44,9 @@ Discord: https://discord.gg/ef8cyW4t7p
 #### Note: These examples are very basic
 ### Server
 ```java
+import me.openautonomousconnection.protocol.ProtocolBridge;
+import me.openautonomousconnection.protocol.ProtocolSettings;
+import me.openautonomousconnection.protocol.ProtocolVersion;
 import me.openautonomousconnection.protocol.side.ProtocolServer;
 
 public class Server extends ProtocolServer {
@@ -77,6 +80,9 @@ public class Server extends ProtocolServer {
 ### Client
 
 ```java
+import me.openautonomousconnection.protocol.ProtocolBridge;
+import me.openautonomousconnection.protocol.ProtocolSettings;
+import me.openautonomousconnection.protocol.ProtocolVersion;
 import me.openautonomousconnection.protocol.side.ProtocolClient;
 
 public class Client extends ProtocolClient {
