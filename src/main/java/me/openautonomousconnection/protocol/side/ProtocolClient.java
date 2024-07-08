@@ -63,6 +63,6 @@ public abstract class ProtocolClient extends DefaultMethodsOverrider {
     public final void resolveSite(RequestDomain requestDomain) throws IOException, ClassNotFoundException {
         if (!client.isConnected()) return;
         
-        client.sendPacket(new DomainPacket(protocolBridge, requestDomain, null));
+        client.sendPacket(new DomainPacket(requestDomain, null));
     }
 }
