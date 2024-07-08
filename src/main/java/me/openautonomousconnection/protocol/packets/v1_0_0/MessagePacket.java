@@ -17,15 +17,13 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 public class MessagePacket extends Packet {
-    private ProtocolBridge protocolBridge;
     private ProtocolVersion protocolVersion;
     private String message;
     private int clientID;
 
-    public MessagePacket(ProtocolBridge protocolBridge, int id, String message) {
+    public MessagePacket(int id, String message) {
         super(id);
 
-        this.protocolBridge = protocolBridge;
         this.message = message;
     }
 
@@ -35,11 +33,11 @@ public class MessagePacket extends Packet {
 
     @Override
     public void write(ObjectOutputStream objectOutputStream) throws IOException, ClassNotFoundException {
-        protocolVersion = protocolBridge.getProtocolVersion();
+        protocolVersion = ProtocolBridge.getInstance().getProtocolVersion();
 
-        if (protocolBridge.isRunningAsServer()) objectOutputStream.writeInt(clientID);
+        if (ProtocolBridge.getInstance().isRunningAsServer()) objectOutputStream.writeInt(clientID);
         else {
-            clientID = protocolBridge.getProtocolClient().getClient().getClientID();
+            clientID = ProtocolBridge.getInstance().getProtocolClient().getClient().getClientID();
             objectOutputStream.writeInt(clientID);
         }
 
@@ -49,19 +47,19 @@ public class MessagePacket extends Packet {
 
     @Override
     public void read(ObjectInputStream objectInputStream) throws IOException, ClassNotFoundException {
-        if (protocolBridge.isRunningAsServer()) {
+        if (ProtocolBridge.getInstance().isRunningAsServer()) {
             int clientID = objectInputStream.readInt();
             String message = objectInputStream.readUTF();
             protocolVersion = (ProtocolVersion) objectInputStream.readObject();
 
-            protocolBridge.getProtocolServer().handleMessage(clientID, message);
+            ProtocolBridge.getInstance().getProtocolServer().handleMessage(clientID, message);
         } else {
             int clientID = objectInputStream.readInt();
             String message = objectInputStream.readUTF();
             protocolVersion = (ProtocolVersion) objectInputStream.readObject();
 
-            if (clientID != protocolBridge.getProtocolClient().getClient().getClientID()) return;
-            protocolBridge.getProtocolClient().handleMessage(message);
+            if (clientID != ProtocolBridge.getInstance().getProtocolClient().getClient().getClientID()) return;
+            ProtocolBridge.getInstance().getProtocolClient().handleMessage(message);
         }
     }
 

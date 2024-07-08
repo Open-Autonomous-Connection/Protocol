@@ -56,7 +56,6 @@ public class DomainPacket extends Packet {
 
     @Override
     public void read(ObjectInputStream objectInputStream) throws IOException, ClassNotFoundException {
-        if (ProtocolBridge.getInstance() == null)
         if (ProtocolBridge.getInstance().isRunningAsServer()) {
             clientID = objectInputStream.readInt();
             requestDomain = (RequestDomain) objectInputStream.readObject();
