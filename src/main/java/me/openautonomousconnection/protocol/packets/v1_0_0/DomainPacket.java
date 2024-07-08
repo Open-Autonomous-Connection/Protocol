@@ -42,9 +42,9 @@ public class DomainPacket extends Packet {
         protocolVersion = ProtocolBridge.getInstance().getProtocolVersion();
 
         if (ProtocolBridge.getInstance().isRunningAsServer()) {
-            objectOutputStream.writeObject(domain);
             objectOutputStream.writeInt(clientID);
             objectOutputStream.writeObject(requestDomain);
+            objectOutputStream.writeObject(domain);
         } else {
             clientID = ProtocolBridge.getInstance().getProtocolClient().getClient().getClientID();
             objectOutputStream.writeInt(clientID);
