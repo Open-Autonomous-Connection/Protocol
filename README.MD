@@ -84,6 +84,7 @@ public class Server extends ProtocolServer {
 import me.openautonomousconnection.protocol.ProtocolBridge;
 import me.openautonomousconnection.protocol.ProtocolSettings;
 import me.openautonomousconnection.protocol.ProtocolVersion;
+import me.openautonomousconnection.protocol.domain.Domain;
 import me.openautonomousconnection.protocol.side.ProtocolClient;
 import me.openautonomousconnection.protocol.utils.SiteType;
 
@@ -101,7 +102,7 @@ public class Client extends ProtocolClient {
     }
 
     @Override
-    public void handleHTMLContent(SiteType siteType, String htmlContent) {
+    public void handleHTMLContent(SiteType siteType, Domain domain, String htmlContent) {
         System.out.println("Website html content received. This site is " + siteType.name);
         System.out.println(htmlContent); // Render content in a webview for example
     }
