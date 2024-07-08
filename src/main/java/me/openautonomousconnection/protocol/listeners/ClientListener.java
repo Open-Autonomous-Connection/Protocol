@@ -13,6 +13,7 @@ import me.finn.unlegitlibrary.event.Listener;
 import me.openautonomousconnection.protocol.events.v1_0_0.DomainPacketReceivedEvent;
 import me.openautonomousconnection.protocol.events.v1_0_0.PingPacketReceivedEvent;
 import me.openautonomousconnection.protocol.packets.v1_0_0.PingPacket;
+import me.openautonomousconnection.protocol.utils.SiteType;
 import me.openautonomousconnection.protocol.utils.WebsitesContent;
 
 import java.io.BufferedReader;
@@ -32,9 +33,9 @@ public class ClientListener extends EventListener {
                 event.protocolBridge.getProtocolClient().getClient().
                         sendPacket(new PingPacket(event.protocolBridge, event.requestDomain, event.domain, false));
             } catch (IOException | ClassNotFoundException exception) {
-                event.protocolBridge.getProtocolClient().handleHTMLContent(WebsitesContent.ERROR_OCCURRED(exception.getMessage()));
+                event.protocolBridge.getProtocolClient().handleHTMLContent(SiteType.LOCAL, WebsitesContent.ERROR_OCCURRED(exception.getMessage()));
             }
-        } else event.protocolBridge.getProtocolClient().handleHTMLContent(WebsitesContent.DOMAIN_NOT_FOUND);
+        } else event.protocolBridge.getProtocolClient().handleHTMLContent(SiteType.LOCAL, WebsitesContent.DOMAIN_NOT_FOUND);
     }
 
     @Listener
@@ -51,10 +52,10 @@ public class ClientListener extends EventListener {
                     while ((line = reader.readLine()) != null) content.append(line);
                 }
 
-                event.protocolBridge.getProtocolClient().handleHTMLContent(content.toString());
+                event.protocolBridge.getProtocolClient().handleHTMLContent(SiteType.PUBLIC, content.toString());
             } catch (IOException exception) {
-                event.protocolBridge.getProtocolClient().handleHTMLContent(WebsitesContent.ERROR_OCCURRED(exception.getMessage()));
+                event.protocolBridge.getProtocolClient().handleHTMLContent(SiteType.LOCAL, WebsitesContent.ERROR_OCCURRED(exception.getMessage()));
             }
-        } else event.protocolBridge.getProtocolClient().handleHTMLContent(WebsitesContent.DOMAIN_NOT_REACHABLE);
+        } else event.protocolBridge.getProtocolClient().handleHTMLContent(SiteType.LOCAL, WebsitesContent.DOMAIN_NOT_REACHABLE);
     }
 }

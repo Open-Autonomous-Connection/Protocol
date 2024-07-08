@@ -14,6 +14,7 @@ import me.openautonomousconnection.protocol.domain.RequestDomain;
 import me.openautonomousconnection.protocol.listeners.ClientListener;
 import me.openautonomousconnection.protocol.listeners.ServerListener;
 import me.openautonomousconnection.protocol.packets.v1_0_0.DomainPacket;
+import me.openautonomousconnection.protocol.utils.SiteType;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -23,7 +24,7 @@ public abstract class ProtocolClient {
     private NetworkClient client;
     private ProtocolBridge protocolBridge;
     
-    public abstract void handleHTMLContent(String htmlContent);
+    public abstract void handleHTMLContent(SiteType siteType, String htmlContent);
     public abstract void handleMessage(String message);
 
     public final NetworkClient getClient() {
