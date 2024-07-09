@@ -27,10 +27,10 @@ import java.util.List;
 public abstract class ProtocolServer extends DefaultMethodsOverrider {
     public abstract List<Domain> getDomains() throws SQLException;
     public abstract List<String> getTopLevelDomains() throws SQLException;
-    public abstract void handleMessage(int clientID, String message);
-    public abstract String getDNSServerInfoSite();
-    public abstract String getInfoSite(String topLevelDomain);
-    public abstract String getInterfaceSite();
+    public abstract void handleMessage(int clientID, String message) throws SQLException;
+    public abstract String getDNSServerInfoSite() throws SQLException;
+    public abstract String getInfoSite(String topLevelDomain) throws SQLException;
+    public abstract String getInterfaceSite() throws SQLException;
 
     private final int timeoutInSeconds;
     private NetworkServer server;
@@ -105,14 +105,14 @@ public abstract class ProtocolServer extends DefaultMethodsOverrider {
     }
 
     public final boolean topLevelDomainExists(String topLevelDomain) throws SQLException {
-        return getTopLevelDomains().contains(topLevelDomain);
+        return topLevelDomain.endsWith("oac") || getTopLevelDomains().contains(topLevelDomain);
     }
 
     public final Domain getDomain(String name, String topLevelDomain) throws SQLException {
         if (!topLevelDomainExists(topLevelDomain)) return null;
 
         if (name.equalsIgnoreCase("info")) return new Domain(name, topLevelDomain, getInfoSite(topLevelDomain));
-        if (name.equalsIgnoreCase("interface") && topLevelDomain.equalsIgnoreCase("oac")) return new Domain(name, topLevelDomain, getDNSServerInfoSite());
+        if (name.equalsIgnoreCase("interface") && topLevelDomain.equalsIgnoreCase("oac")) return new Domain(name, topLevelDomain, getInterfaceSite());
 
         for (Domain domain : getDomains()) if (domain.name.equals(name) && domain.topLevelDomain.equals(topLevelDomain)) return domain;
         return null;
