@@ -24,7 +24,7 @@ public class Domain implements Serializable {
     }
 
     public final String realDestination() {
-        return destination.replace("localhost", "127.0.0.1").replace("0", "127.0.0.1");
+        return destination;
     }
 
     public final String parsedDestination() {
@@ -38,7 +38,7 @@ public class Domain implements Serializable {
             return base;
         }
 
-        return destination.replace("localhost", "127.0.0.1").replace("0", "127.0.0.1");
+        return destination;
     }
 
     @Override
