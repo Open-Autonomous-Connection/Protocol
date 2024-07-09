@@ -24,7 +24,7 @@ public class Domain implements Serializable {
     }
 
     public final String realDestination() {
-        return destination;
+        return destination.replace("localhost", "127.0.0.1").replace("0", "127.0.0.1");
     }
 
     public final String parsedDestination() {
@@ -34,10 +34,11 @@ public class Domain implements Serializable {
             String username = DomainUtils.getPath(destination).split("/")[0];
             String site = DomainUtils.getPath(destination).split("/")[1];
 
-            return base + username + "/" + site + "/main/index.html";
+            base = base + username + "/" + site + "/main/index.html";
+            return base;
         }
 
-        return destination;
+        return destination.replace("localhost", "127.0.0.1").replace("0", "127.0.0.1");
     }
 
     @Override
