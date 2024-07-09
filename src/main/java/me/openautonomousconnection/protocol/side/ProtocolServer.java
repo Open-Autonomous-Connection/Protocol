@@ -27,7 +27,7 @@ import java.util.List;
 public abstract class ProtocolServer extends DefaultMethodsOverrider {
     public abstract List<Domain> getDomains() throws SQLException;
     public abstract List<String> getTopLevelDomains() throws SQLException;
-    public abstract void handleMessage(int clientID, String message) throws SQLException;
+    public abstract void handleMessage(int clientID, String message);
     public abstract String getDNSServerInfoSite() throws SQLException;
     public abstract String getInfoSite(String topLevelDomain) throws SQLException;
     public abstract String getInterfaceSite() throws SQLException;
