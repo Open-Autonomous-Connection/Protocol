@@ -105,15 +105,16 @@ public abstract class ProtocolServer extends DefaultMethodsOverrider {
     }
 
     public final boolean topLevelDomainExists(String topLevelDomain) throws SQLException {
-        return topLevelDomain.endsWith("oac") || getTopLevelDomains().contains(topLevelDomain);
+        return topLevelDomain.equalsIgnoreCase("oac") || getTopLevelDomains().contains(topLevelDomain);
     }
 
     public final Domain getDomain(String name, String topLevelDomain) throws SQLException {
         if (!topLevelDomainExists(topLevelDomain)) return null;
 
         if (name.equalsIgnoreCase("info") && topLevelDomain.equalsIgnoreCase("oac")) return new Domain(name, topLevelDomain, getDNSServerInfoSite());
-        if (name.equalsIgnoreCase("info")) return new Domain(name, topLevelDomain, getInfoSite(topLevelDomain));
         if (name.equalsIgnoreCase("interface") && topLevelDomain.equalsIgnoreCase("oac")) return new Domain(name, topLevelDomain, getInterfaceSite());
+
+        if (name.equalsIgnoreCase("info")) return new Domain(name, topLevelDomain, getInfoSite(topLevelDomain));
 
         for (Domain domain : getDomains()) if (domain.name.equals(name) && domain.topLevelDomain.equals(topLevelDomain)) return domain;
         return null;

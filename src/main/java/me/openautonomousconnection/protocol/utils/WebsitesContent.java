@@ -26,6 +26,20 @@ public class WebsitesContent extends DefaultMethodsOverrider {
             </html>
             """;
 
+    public static final String FILE_NOT_FOUND = """
+            <html>
+            <head>
+                <title>404 - File not found</title>
+                <meta content="UTF-8" name="charset"/>
+                <meta content="Open Autonomous Connection" name="author"/>
+                <meta content="File not found" name="description"/>
+            </head>
+            <body>
+            <h1>404 - This file was not found</h1>
+            </body>
+            </html>
+            """;
+
     public static final String DOMAIN_NOT_REACHABLE = """
             <html>
             <head>
