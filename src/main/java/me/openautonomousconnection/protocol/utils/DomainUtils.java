@@ -21,7 +21,12 @@ public class DomainUtils extends DefaultMethodsOverrider {
         URL uri = null;
         String tldString = null;
 
-        if (url.startsWith("oac://")) url = url.substring(6);
+        if (url.startsWith(SiteType.PUBLIC.name + "://")) url = url.substring((SiteType.PUBLIC.name + "://").length());
+        if (url.startsWith(SiteType.CLIENT.name + "://")) url = url.substring((SiteType.CLIENT.name + "://").length());
+        if (url.startsWith(SiteType.SERVER.name + "://")) url = url.substring((SiteType.SERVER.name + "://").length());
+        if (url.startsWith(SiteType.PROTOCOL.name + "://")) url = url.substring((SiteType.PROTOCOL.name + "://").length());
+        if (url.startsWith(SiteType.LOCAL.name + "://")) url = url.substring((SiteType.LOCAL.name + "://").length());
+
         if (!url.startsWith("https://")) url = "https://" + url;
 
         uri = new URL(url);
@@ -32,7 +37,12 @@ public class DomainUtils extends DefaultMethodsOverrider {
     }
 
     public static String getDomainName(String url) throws URISyntaxException, MalformedURLException {
-        if (url.startsWith("oac://")) url = url.substring(6);
+        if (url.startsWith(SiteType.PUBLIC.name + "://")) url = url.substring((SiteType.PUBLIC.name + "://").length());
+        if (url.startsWith(SiteType.CLIENT.name + "://")) url = url.substring((SiteType.CLIENT.name + "://").length());
+        if (url.startsWith(SiteType.SERVER.name + "://")) url = url.substring((SiteType.SERVER.name + "://").length());
+        if (url.startsWith(SiteType.PROTOCOL.name + "://")) url = url.substring((SiteType.PROTOCOL.name + "://").length());
+        if (url.startsWith(SiteType.LOCAL.name + "://")) url = url.substring((SiteType.LOCAL.name + "://").length());
+
         if (!url.startsWith("https://")) url = "https://" + url;
 
         URI uri = new URI(url);
@@ -42,11 +52,14 @@ public class DomainUtils extends DefaultMethodsOverrider {
 
 
     public static String getPath(String url) {
-        if (!url.startsWith("oac://") && !url.startsWith("http://") && !url.startsWith("https://"))
-            url = "oac://" + url;
+        if (!url.startsWith(SiteType.PUBLIC.name + "://") && !url.startsWith(SiteType.CLIENT.name + "://") &&
+                !url.startsWith(SiteType.SERVER.name + "://") && !url.startsWith(SiteType.PROTOCOL.name + "://") &&
+                !url.startsWith(SiteType.LOCAL.name + "://") && !url.startsWith("http") && !url.startsWith("https")) {
+            url = SiteType.PUBLIC.name + "://" + url;
+        }
 
         String[] split = url.split("/");
-        if (split.length <= 3) return null;
+        if (split.length <= 3) return "";
 
         StringBuilder path = new StringBuilder();
 

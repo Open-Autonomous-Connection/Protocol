@@ -42,7 +42,7 @@ public abstract class ProtocolServer extends DefaultMethodsOverrider {
         server = new NetworkServer.ServerBuilder()
                 .enableDebugLog()
                 .setEventManager(protocolBridge.getProtocolSettings().eventManager).setPacketHandler(protocolBridge.getProtocolSettings().packetHandler)
-                .setMaxAttempts(0).setAttemptDelayInSeconds(5)
+                .setMaxAttempts(10).setAttemptDelayInSeconds(5)
                 .setPort(protocolBridge.getProtocolSettings().port).build();
     }
 
@@ -97,24 +97,24 @@ public abstract class ProtocolServer extends DefaultMethodsOverrider {
     }
 
     public final boolean domainExists(Domain domain) throws SQLException {
-        return domainExists(new RequestDomain(domain.name, domain.topLevelDomain));
+        return domainExists(new RequestDomain(domain.name, domain.topLevelDomain, domain.getPath()));
     }
 
     public final Domain getDomain(RequestDomain domain) throws SQLException {
-        return getDomain(domain.name, domain.topLevelDomain);
+        return getDomain(domain.name, domain.topLevelDomain, domain.getPath());
     }
 
     public final boolean topLevelDomainExists(String topLevelDomain) throws SQLException {
         return topLevelDomain.equalsIgnoreCase("oac") || getTopLevelDomains().contains(topLevelDomain);
     }
 
-    public final Domain getDomain(String name, String topLevelDomain) throws SQLException {
+    public final Domain getDomain(String name, String topLevelDomain, String path) throws SQLException {
         if (!topLevelDomainExists(topLevelDomain)) return null;
 
-        if (name.equalsIgnoreCase("info") && topLevelDomain.equalsIgnoreCase("oac")) return new Domain(name, topLevelDomain, getDNSServerInfoSite());
-        if (name.equalsIgnoreCase("interface") && topLevelDomain.equalsIgnoreCase("oac")) return new Domain(name, topLevelDomain, getInterfaceSite());
+        if (name.equalsIgnoreCase("info") && topLevelDomain.equalsIgnoreCase("oac")) return new Domain(name, topLevelDomain, getDNSServerInfoSite(), path);
+        if (name.equalsIgnoreCase("interface") && topLevelDomain.equalsIgnoreCase("oac")) return new Domain(name, topLevelDomain, getInterfaceSite(), path);
 
-        if (name.equalsIgnoreCase("info")) return new Domain(name, topLevelDomain, getInfoSite(topLevelDomain));
+        if (name.equalsIgnoreCase("info")) return new Domain(name, topLevelDomain, getInfoSite(topLevelDomain), path);
 
         for (Domain domain : getDomains()) if (domain.name.equals(name) && domain.topLevelDomain.equals(topLevelDomain)) return domain;
         return null;

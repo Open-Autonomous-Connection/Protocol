@@ -21,11 +21,13 @@ public class DomainPacketReceivedEvent extends Event {
     public final ProtocolVersion protocolVersion;
     public final Domain domain;
     public final RequestDomain requestDomain;
+    public final int clientID;
 
-    public DomainPacketReceivedEvent(ProtocolVersion protocolVersion, Domain domain, RequestDomain requestDomain) {
+    public DomainPacketReceivedEvent(ProtocolVersion protocolVersion, Domain domain, RequestDomain requestDomain, int clientID) {
         this.protocolVersion = protocolVersion;
         this.domain = domain;
         this.requestDomain = requestDomain;
+        this.clientID = clientID;
     }
 
     @Override

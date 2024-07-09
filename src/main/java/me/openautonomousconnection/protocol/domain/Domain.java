@@ -16,15 +16,25 @@ public class Domain implements Serializable {
     public final String name;
     public final String topLevelDomain;
     private final String destination;
+    private final String path;
 
-    public Domain(String name, String topLevelDomain, String destination) {
+    public Domain(String name, String topLevelDomain, String destination, String path) {
+        if (path == null) path = "";
+
         this.name = name;
         this.topLevelDomain = topLevelDomain;
         this.destination = destination;
+        this.path = path;
     }
 
     public final String realDestination() {
-        return destination;
+        String tmpDestination = destination.endsWith("/") ? destination : destination + "/";
+        return tmpDestination  + (getPath() == null ? "" : (getPath().startsWith("/") ? "" : "/") + getPath());
+    }
+
+    public final String getPath() {
+        return path.endsWith("/") ? path : (path.endsWith(".html") || path.endsWith(".php") ||
+                path.endsWith(".js") ? path : path + "/");
     }
 
     public final String parsedDestination() {
@@ -34,16 +44,16 @@ public class Domain implements Serializable {
             String username = DomainUtils.getPath(destination).split("/")[0];
             String site = DomainUtils.getPath(destination).split("/")[1];
 
-            base = base + username + "/" + site + "/main/index.html";
+            base = base + username + "/" + site + "/main/" + (getPath() == null ? "index.html" : (getPath().startsWith("/") ? "" : "/") + getPath());
             return base;
         }
 
-        return destination;
+        return realDestination();
     }
 
     @Override
     protected final Object clone() throws CloneNotSupportedException {
-        return new Domain(name, topLevelDomain, destination);
+        return new Domain(name, topLevelDomain, destination, path);
     }
 
     @Override

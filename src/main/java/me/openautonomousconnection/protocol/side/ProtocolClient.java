@@ -43,7 +43,7 @@ public abstract class ProtocolClient extends DefaultMethodsOverrider {
         client = new NetworkClient.ClientBuilder()
                 .enableDebugLog()
                 .setEventManager(protocolBridge.getProtocolSettings().eventManager).setPacketHandler(protocolBridge.getProtocolSettings().packetHandler)
-                .setMaxAttempts(0).setAttemptDelayInSeconds(5)
+                .setMaxAttempts(10).setAttemptDelayInSeconds(5)
                 .setPort(protocolBridge.getProtocolSettings().port).setHost(protocolBridge.getProtocolSettings().host).
                 build();
     }

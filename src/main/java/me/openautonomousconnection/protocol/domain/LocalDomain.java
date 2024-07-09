@@ -9,7 +9,7 @@
 package me.openautonomousconnection.protocol.domain;
 
 public class LocalDomain extends Domain {
-    public LocalDomain(String name, String endName) {
-        super(name, endName, null);
+    public LocalDomain(String name, String endName, String path) {
+        super(name, endName, null, path);
     }
 }

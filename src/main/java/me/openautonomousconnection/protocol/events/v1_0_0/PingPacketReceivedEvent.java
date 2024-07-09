@@ -20,12 +20,14 @@ public class PingPacketReceivedEvent extends Event {
     public final Domain domain;
     public final RequestDomain requestDomain;
     public final boolean reachable;
+    public final int clientID;
 
-    public PingPacketReceivedEvent(ProtocolVersion protocolVersion, Domain domain, RequestDomain requestDomain, boolean reachable) {
+    public PingPacketReceivedEvent(ProtocolVersion protocolVersion, Domain domain, RequestDomain requestDomain, boolean reachable, int clientID) {
         this.protocolVersion = protocolVersion;
         this.domain = domain;
         this.requestDomain = requestDomain;
         this.reachable = reachable;
+        this.clientID = clientID;
     }
 
     @Override

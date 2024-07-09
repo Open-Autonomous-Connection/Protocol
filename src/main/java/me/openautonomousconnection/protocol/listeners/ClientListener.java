@@ -36,9 +36,9 @@ public class ClientListener extends EventListener {
                 ProtocolBridge.getInstance().getProtocolClient().getClient().
                         sendPacket(new PingPacket(event.requestDomain, event.domain, false));
             } catch (IOException | ClassNotFoundException exception) {
-                ProtocolBridge.getInstance().getProtocolClient().handleHTMLContent(SiteType.PROTOCOL, new LocalDomain("error-occurred", "html"), WebsitesContent.ERROR_OCCURRED(exception.getMessage()));
+                ProtocolBridge.getInstance().getProtocolClient().handleHTMLContent(SiteType.PROTOCOL, new LocalDomain("error-occurred", "html", ""), WebsitesContent.ERROR_OCCURRED(exception.getMessage()));
             }
-        } else ProtocolBridge.getInstance().getProtocolClient().handleHTMLContent(SiteType.PROTOCOL, new LocalDomain("domain-not-found", "html"), WebsitesContent.DOMAIN_NOT_FOUND);
+        } else ProtocolBridge.getInstance().getProtocolClient().handleHTMLContent(SiteType.PROTOCOL, new LocalDomain("domain-not-found", "html", ""), WebsitesContent.DOMAIN_NOT_FOUND);
     }
 
     @Listener
@@ -57,9 +57,9 @@ public class ClientListener extends EventListener {
 
                 ProtocolBridge.getInstance().getProtocolClient().handleHTMLContent(SiteType.PUBLIC, event.domain, content.toString());
             } catch (IOException exception) {
-                ProtocolBridge.getInstance().getProtocolClient().handleHTMLContent(SiteType.PROTOCOL, new LocalDomain("domain-not-found", "html"), WebsitesContent.ERROR_OCCURRED(exception.getMessage()));
+                ProtocolBridge.getInstance().getProtocolClient().handleHTMLContent(SiteType.PROTOCOL, new LocalDomain("domain-not-found", "html", ""), WebsitesContent.ERROR_OCCURRED(exception.getMessage()));
             }
-        } else ProtocolBridge.getInstance().getProtocolClient().handleHTMLContent(SiteType.PROTOCOL, new LocalDomain("error-not-reached", "html"), WebsitesContent.DOMAIN_NOT_REACHABLE);
+        } else ProtocolBridge.getInstance().getProtocolClient().handleHTMLContent(SiteType.PROTOCOL, new LocalDomain("error-not-reached", "html", ""), WebsitesContent.DOMAIN_NOT_REACHABLE);
     }
 
     @Override

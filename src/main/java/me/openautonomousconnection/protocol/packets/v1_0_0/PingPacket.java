@@ -71,7 +71,7 @@ public class PingPacket extends Packet {
             }
 
             reachable = domain != null;
-            ProtocolBridge.getInstance().getProtocolServer().getServer().getEventManager().executeEvent(new PingPacketReceivedEvent(protocolVersion, domain, requestDomain, reachable));
+            ProtocolBridge.getInstance().getProtocolServer().getServer().getEventManager().executeEvent(new PingPacketReceivedEvent(protocolVersion, domain, requestDomain, reachable, clientID));
             ProtocolBridge.getInstance().getProtocolServer().getServer().getClientHandlerByID(clientID).sendPacket(new PingPacket(requestDomain, domain, reachable));
         } else {
             clientID = objectInputStream.readInt();
@@ -80,7 +80,7 @@ public class PingPacket extends Packet {
             boolean reachable = objectInputStream.readBoolean();
             protocolVersion = (ProtocolVersion) objectInputStream.readObject();
 
-            ProtocolBridge.getInstance().getProtocolClient().getClient().getEventManager().executeEvent(new PingPacketReceivedEvent(protocolVersion, domain, requestDomain, reachable));
+            ProtocolBridge.getInstance().getProtocolClient().getClient().getEventManager().executeEvent(new PingPacketReceivedEvent(protocolVersion, domain, requestDomain, reachable, clientID));
         }
     }
 

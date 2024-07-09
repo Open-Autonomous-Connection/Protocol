@@ -12,7 +12,7 @@ import java.io.Serializable;
 
 public class RequestDomain extends Domain implements Serializable {
 
-    public RequestDomain(String name, String topLevelDomain) {
-        super(name, topLevelDomain, null);
+    public RequestDomain(String name, String topLevelDomain, String path) {
+        super(name, topLevelDomain, null, path);
     }
 }
