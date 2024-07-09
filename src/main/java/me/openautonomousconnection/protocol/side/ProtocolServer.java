@@ -111,6 +111,7 @@ public abstract class ProtocolServer extends DefaultMethodsOverrider {
     public final Domain getDomain(String name, String topLevelDomain) throws SQLException {
         if (!topLevelDomainExists(topLevelDomain)) return null;
 
+        if (name.equalsIgnoreCase("info") && topLevelDomain.equalsIgnoreCase("oac")) return new Domain(name, topLevelDomain, getDNSServerInfoSite());
         if (name.equalsIgnoreCase("info")) return new Domain(name, topLevelDomain, getInfoSite(topLevelDomain));
         if (name.equalsIgnoreCase("interface") && topLevelDomain.equalsIgnoreCase("oac")) return new Domain(name, topLevelDomain, getInterfaceSite());
 
