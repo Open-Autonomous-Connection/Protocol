@@ -18,8 +18,7 @@ import me.openautonomousconnection.protocol.listeners.ServerListener;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import java.net.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -32,7 +31,6 @@ public abstract class ProtocolServer extends DefaultMethodsOverrider {
     public abstract String getInfoSite(String topLevelDomain) throws SQLException;
     public abstract String getInterfaceSite() throws SQLException;
 
-    private final int timeoutInSeconds;
     private NetworkServer server;
     private ProtocolBridge protocolBridge;
 
@@ -44,10 +42,6 @@ public abstract class ProtocolServer extends DefaultMethodsOverrider {
                 .setEventManager(protocolBridge.getProtocolSettings().eventManager).setPacketHandler(protocolBridge.getProtocolSettings().packetHandler)
                 .setMaxAttempts(10).setAttemptDelayInSeconds(5)
                 .setPort(protocolBridge.getProtocolSettings().port).build();
-    }
-
-    public ProtocolServer(int timeoutInSeconds) throws IOException, InterruptedException {
-        this.timeoutInSeconds = timeoutInSeconds;
     }
 
     public final ProtocolBridge getProtocolBridge() {
@@ -74,19 +68,37 @@ public abstract class ProtocolServer extends DefaultMethodsOverrider {
         Domain domain = getDomain(requestDomain);
         boolean reachable = false;
 
+        String destination = domain.parsedDestination();
+        if (destination == null) reachable = false;
+        if (!destination.startsWith("http://")) destination = "http://" + destination;
+
+        HttpURLConnection connection = null;
+
         try {
-            InetAddress address = null;
-            reachable = domain != null;
+            URL u = new URL(destination);
 
-            if (reachable) address = InetAddress.getByName(domain.parsedDestination());
-            if (address == null) reachable = false;
-            else reachable = address.isReachable(timeoutInSeconds * 1000);
-        } catch (UnknownHostException exception) {
-            reachable = domain.parsedDestination().startsWith("https://raw.githubusercontent.com/");
+            connection = (HttpURLConnection) u.openConnection();
+            connection.setRequestMethod("HEAD");
 
-            if (!reachable) exception.printStackTrace();
+            int code = connection.getResponseCode();
+
+            reachable = code == 200;
         } catch (IOException exception) {
+            InetAddress address = null;
+            try {
+                InetAddress address1 = InetAddress.getByName(destination);
+                String ip = address1.getHostAddress();
+                address = InetAddress.getByName(ip);
+                reachable = address.isReachable(10000);
+            } catch (IOException exc) {
+                reachable = false;
+                exc.printStackTrace();
+            }
+
+            reachable = false;
             exception.printStackTrace();
+        } finally {
+            if (connection != null) connection.disconnect();
         }
 
         return domain;
@@ -116,7 +128,7 @@ public abstract class ProtocolServer extends DefaultMethodsOverrider {
 
         if (name.equalsIgnoreCase("info")) return new Domain(name, topLevelDomain, getInfoSite(topLevelDomain), path);
 
-        for (Domain domain : getDomains()) if (domain.name.equals(name) && domain.topLevelDomain.equals(topLevelDomain)) return domain;
+        for (Domain domain : getDomains()) if (domain.name.equals(name) && domain.topLevelDomain.equals(topLevelDomain)) return new Domain(domain.name, domain.topLevelDomain, domain.realDestination(), path);
         return null;
     }
 }

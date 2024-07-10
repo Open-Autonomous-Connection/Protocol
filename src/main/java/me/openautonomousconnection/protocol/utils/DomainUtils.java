@@ -65,6 +65,10 @@ public class DomainUtils extends DefaultMethodsOverrider {
 
         for (int i = 3; i < split.length; i++) path.append(split[i]).append("/");
 
-        return path.toString();
+        String pathStr = path.toString();
+        if (pathStr.startsWith("/")) pathStr = pathStr.substring("/".length());
+        if (pathStr.endsWith("/")) pathStr = pathStr.substring(0, pathStr.length() - "/".length());
+
+        return pathStr;
     }
 }

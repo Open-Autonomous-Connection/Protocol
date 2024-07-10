@@ -29,22 +29,33 @@ public class Domain implements Serializable {
 
     public final String realDestination() {
         String tmpDestination = destination.endsWith("/") ? destination : destination + "/";
-        return tmpDestination  + (getPath() == null ? "" : (getPath().startsWith("/") ? "" : "/") + getPath());
+        String tmpPath = getPath();
+
+        if (tmpPath == null) tmpPath = "";
+        if (tmpPath.startsWith("/")) tmpPath = tmpPath.substring("/".length());
+        if (tmpPath.endsWith("/")) tmpPath = tmpPath.substring(0, tmpPath.length() - "/".length());
+
+        return tmpDestination + tmpPath;
     }
 
     public final String getPath() {
-        return path.endsWith("/") ? path : (path.endsWith(".html") || path.endsWith(".php") ||
-                path.endsWith(".js") ? path : path + "/");
+        if (path.endsWith("/")) return path.substring(0, path.length() - "/".length());
+        if (path.startsWith("/")) return path.substring( "/".length());
+        return path;
     }
 
     public final String parsedDestination() {
         if (destination.toLowerCase().startsWith("https://github.com/")) {
-
             String base = "https://raw.githubusercontent.com/";
             String username = DomainUtils.getPath(destination).split("/")[0];
             String site = DomainUtils.getPath(destination).split("/")[1];
 
-            base = base + username + "/" + site + "/main/" + (getPath() == null ? "index.html" : (getPath().startsWith("/") ? "" : "/") + getPath());
+            String tmpPath = getPath();
+            if (tmpPath == null) tmpPath = "index.html";
+            if (tmpPath.startsWith("/")) tmpPath = tmpPath.substring("/".length());
+            if (tmpPath.endsWith("/")) tmpPath = tmpPath.substring(0, tmpPath.length() - "/".length());
+
+            base = base + username + "/" + site + "/main/" + tmpPath;
             return base;
         }
 

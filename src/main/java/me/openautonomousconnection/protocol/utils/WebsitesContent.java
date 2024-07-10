@@ -58,7 +58,7 @@ public class WebsitesContent extends DefaultMethodsOverrider {
         return """
                 <html>
                 <head>
-                    <title>500 - Error occured</title>
+                    <title>500 - Error occurred</title>
                     <meta content="UTF-8" name="charset"/>
                     <meta content="Open Autonomous Connection" name="author"/>
                     <meta content="Site not reached" name="description"/>
