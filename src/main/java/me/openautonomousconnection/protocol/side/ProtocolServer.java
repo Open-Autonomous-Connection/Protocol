@@ -68,7 +68,7 @@ public abstract class ProtocolServer extends DefaultMethodsOverrider {
         boolean reachable = false;
 
         String destination = domain.parsedDestination();
-        if (destination == null) reachable = false;
+
         if (!destination.startsWith("http://") && !destination.startsWith("https://")) destination = "http://" + destination;
 
         HttpURLConnection connection = null;

@@ -44,46 +44,8 @@ public class ClientListener extends EventListener {
     public void onPing(PingPacketReceivedEvent event) {
         if (event.reachable) {
             String destination = event.domain.parsedDestination();
-            boolean reachable = false;
-
-            if (destination == null) return;
-            if (!destination.startsWith("http://") && !destination.startsWith("https://")) destination = "http://" + destination;
-
-            HttpURLConnection connection = null;
 
             try {
-                URL u = new URL(destination);
-
-                connection = (HttpURLConnection) u.openConnection();
-                connection.setRequestMethod("HEAD");
-
-                int code = connection.getResponseCode();
-
-                reachable = code == 200;
-            } catch (IOException exception) {
-                InetAddress address = null;
-                try {
-                    InetAddress address1 = InetAddress.getByName(destination);
-                    String ip = address1.getHostAddress();
-                    address = InetAddress.getByName(ip);
-                    reachable = address.isReachable(10000);
-                } catch (IOException exc) {
-                    reachable = false;
-                    exc.printStackTrace();
-                }
-
-                reachable = false;
-                exception.printStackTrace();
-            } finally {
-                if (connection != null) connection.disconnect();
-            }
-
-            try {
-                if (!reachable) {
-                    ProtocolBridge.getInstance().getProtocolClient().handleHTMLContent(SiteType.PROTOCOL, new LocalDomain("error-not-reached", "html", ""), WebsitesContent.DOMAIN_NOT_REACHABLE);
-                    return;
-                }
-
                 URL url = new URL(destination);
                 HttpURLConnection connection2 = (HttpURLConnection) url.openConnection();
                 connection2.setRequestMethod("GET");
@@ -98,8 +60,6 @@ public class ClientListener extends EventListener {
             } catch (IOException exception) {
                 ProtocolBridge.getInstance().getProtocolClient().handleHTMLContent(SiteType.PROTOCOL, new LocalDomain("error-occurred", "html", ""),
                         WebsitesContent.ERROR_OCCURRED(exception.getMessage().replace(event.domain.parsedDestination(), event.domain.toString() + "/" + event.domain.getPath())));
-            } finally {
-                if (connection != null) connection.disconnect();
             }
         } else ProtocolBridge.getInstance().getProtocolClient().handleHTMLContent(SiteType.PROTOCOL, new LocalDomain("error-not-reached", "html", ""), WebsitesContent.DOMAIN_NOT_REACHABLE);
     }

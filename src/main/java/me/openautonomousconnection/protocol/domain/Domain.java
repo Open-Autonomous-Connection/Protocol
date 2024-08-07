@@ -8,6 +8,7 @@
 
 package me.openautonomousconnection.protocol.domain;
 
+import me.finn.unlegitlibrary.string.StringUtils;
 import me.openautonomousconnection.protocol.utils.DomainUtils;
 
 import java.io.Serializable;
@@ -51,7 +52,7 @@ public class Domain implements Serializable {
             String site = DomainUtils.getPath(destination).split("/")[1];
 
             String tmpPath = getPath();
-            if (tmpPath == null) tmpPath = "index.html";
+            if (tmpPath == null || StringUtils.isEmptyString(tmpPath)) tmpPath = "index.html";
             if (tmpPath.startsWith("/")) tmpPath = tmpPath.substring("/".length());
             if (tmpPath.endsWith("/")) tmpPath = tmpPath.substring(0, tmpPath.length() - "/".length());
 
