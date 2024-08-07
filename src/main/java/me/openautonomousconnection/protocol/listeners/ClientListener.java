@@ -47,7 +47,7 @@ public class ClientListener extends EventListener {
             boolean reachable = false;
 
             if (destination == null) return;
-            if (!destination.startsWith("http://")) destination = "http://" + destination;
+            if (!destination.startsWith("http://") && !destination.startsWith("https://")) destination = "http://" + destination;
 
             HttpURLConnection connection = null;
 
