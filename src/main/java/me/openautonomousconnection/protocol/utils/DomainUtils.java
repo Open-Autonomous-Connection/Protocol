@@ -27,7 +27,7 @@ public class DomainUtils extends DefaultMethodsOverrider {
         if (url.startsWith(SiteType.PROTOCOL.name + "://")) url = url.substring((SiteType.PROTOCOL.name + "://").length());
         if (url.startsWith(SiteType.LOCAL.name + "://")) url = url.substring((SiteType.LOCAL.name + "://").length());
 
-        if (!url.startsWith("https://")) url = "https://" + url;
+        if (!url.startsWith("https://") && !url.startsWith("http://")) url = "https://" + url;
 
         uri = new URL(url);
         String[] domainNameParts = uri.getHost().split("\\.");
@@ -43,7 +43,7 @@ public class DomainUtils extends DefaultMethodsOverrider {
         if (url.startsWith(SiteType.PROTOCOL.name + "://")) url = url.substring((SiteType.PROTOCOL.name + "://").length());
         if (url.startsWith(SiteType.LOCAL.name + "://")) url = url.substring((SiteType.LOCAL.name + "://").length());
 
-        if (!url.startsWith("https://")) url = "https://" + url;
+        if (!url.startsWith("https://") && !url.startsWith("http://")) url = "https://" + url;
 
         URI uri = new URI(url);
         String domain = uri.getHost().replace("." + getTopLevelDomain(url), "");
