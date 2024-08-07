@@ -9,6 +9,7 @@
 package me.openautonomousconnection.protocol.packets.v1_0_0;
 
 import me.finn.unlegitlibrary.network.system.packets.Packet;
+import me.finn.unlegitlibrary.network.system.packets.PacketHandler;
 import me.openautonomousconnection.protocol.ProtocolBridge;
 import me.openautonomousconnection.protocol.ProtocolVersion;
 import me.openautonomousconnection.protocol.domain.Domain;
@@ -38,7 +39,7 @@ public class DomainPacket extends Packet {
     }
 
     @Override
-    public void write(ObjectOutputStream objectOutputStream) throws IOException, ClassNotFoundException {
+    public void write(PacketHandler packetHandler, ObjectOutputStream objectOutputStream) throws IOException, ClassNotFoundException {
         protocolVersion = ProtocolBridge.getInstance().getProtocolVersion();
 
         if (ProtocolBridge.getInstance().isRunningAsServer()) {
@@ -55,7 +56,7 @@ public class DomainPacket extends Packet {
     }
 
     @Override
-    public void read(ObjectInputStream objectInputStream) throws IOException, ClassNotFoundException {
+    public void read(PacketHandler packetHandler, ObjectInputStream objectInputStream) throws IOException, ClassNotFoundException {
         if (ProtocolBridge.getInstance().isRunningAsServer()) {
             clientID = objectInputStream.readInt();
             requestDomain = (RequestDomain) objectInputStream.readObject();
@@ -68,7 +69,7 @@ public class DomainPacket extends Packet {
             }
 
             ProtocolBridge.getInstance().getProtocolServer().getServer().getEventManager().executeEvent(new DomainPacketReceivedEvent(protocolVersion, domain, requestDomain, clientID));
-            ProtocolBridge.getInstance().getProtocolServer().getServer().getClientHandlerByID(clientID).sendPacket(new DomainPacket(requestDomain, domain));
+            ProtocolBridge.getInstance().getProtocolServer().getServer().getConnectionHandlerByID(clientID).sendPacket(new DomainPacket(requestDomain, domain));
         } else {
             clientID = objectInputStream.readInt();
             requestDomain = (RequestDomain) objectInputStream.readObject();

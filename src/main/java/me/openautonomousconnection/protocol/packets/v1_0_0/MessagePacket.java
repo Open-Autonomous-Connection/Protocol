@@ -9,6 +9,7 @@
 package me.openautonomousconnection.protocol.packets.v1_0_0;
 
 import me.finn.unlegitlibrary.network.system.packets.Packet;
+import me.finn.unlegitlibrary.network.system.packets.PacketHandler;
 import me.openautonomousconnection.protocol.ProtocolBridge;
 import me.openautonomousconnection.protocol.ProtocolVersion;
 
@@ -32,7 +33,7 @@ public class MessagePacket extends Packet {
     }
 
     @Override
-    public void write(ObjectOutputStream objectOutputStream) throws IOException, ClassNotFoundException {
+    public void write(PacketHandler packetHandler, ObjectOutputStream objectOutputStream) throws IOException, ClassNotFoundException {
         protocolVersion = ProtocolBridge.getInstance().getProtocolVersion();
 
         if (ProtocolBridge.getInstance().isRunningAsServer()) objectOutputStream.writeInt(clientID);
@@ -46,7 +47,7 @@ public class MessagePacket extends Packet {
     }
 
     @Override
-    public void read(ObjectInputStream objectInputStream) throws IOException, ClassNotFoundException {
+    public void read(PacketHandler packetHandler, ObjectInputStream objectInputStream) throws IOException, ClassNotFoundException {
         if (ProtocolBridge.getInstance().isRunningAsServer()) {
             int clientID = objectInputStream.readInt();
             String message = objectInputStream.readUTF();

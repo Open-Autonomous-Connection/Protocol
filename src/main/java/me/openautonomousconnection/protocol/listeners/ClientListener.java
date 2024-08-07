@@ -33,12 +33,9 @@ public class ClientListener extends EventListener {
         boolean exists = event.domain != null;
 
         if (exists) {
-            try {
-                ProtocolBridge.getInstance().getProtocolClient().getClient().
-                        sendPacket(new PingPacket(event.requestDomain, event.domain, false));
-            } catch (IOException | ClassNotFoundException exception) {
+            if (!ProtocolBridge.getInstance().getProtocolClient().getClient().sendPacket(new PingPacket(event.requestDomain, event.domain, false))) {
                 ProtocolBridge.getInstance().getProtocolClient().handleHTMLContent(SiteType.PROTOCOL, new LocalDomain("error-occurred", "html", ""),
-                        WebsitesContent.ERROR_OCCURRED(exception.getMessage().replace(event.domain.parsedDestination(), event.domain.toString() + "/" + event.domain.getPath())));
+                        WebsitesContent.ERROR_OCCURRED(event.domain.toString() + "/" + event.domain.getPath()));
             }
         } else ProtocolBridge.getInstance().getProtocolClient().handleHTMLContent(SiteType.PROTOCOL, new LocalDomain("domain-not-found", "html", ""), WebsitesContent.DOMAIN_NOT_FOUND);
     }

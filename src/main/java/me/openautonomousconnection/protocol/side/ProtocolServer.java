@@ -34,13 +34,12 @@ public abstract class ProtocolServer extends DefaultMethodsOverrider {
     private NetworkServer server;
     private ProtocolBridge protocolBridge;
 
-    public final void setProtocolBridge(ProtocolBridge protocolBridge) {
+    public final void setProtocolBridge(ProtocolBridge protocolBridge) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         this.protocolBridge = protocolBridge;
 
         server = new NetworkServer.ServerBuilder()
-                .enableDebugLog()
                 .setEventManager(protocolBridge.getProtocolSettings().eventManager).setPacketHandler(protocolBridge.getProtocolSettings().packetHandler)
-                .setMaxAttempts(10).setAttemptDelayInSeconds(5)
+                .setMaxReconnectAttempts(10).setReconnectDelay(5)
                 .setPort(protocolBridge.getProtocolSettings().port).build();
     }
 

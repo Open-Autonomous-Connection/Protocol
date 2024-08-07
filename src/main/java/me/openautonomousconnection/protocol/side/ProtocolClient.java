@@ -37,13 +37,12 @@ public abstract class ProtocolClient extends DefaultMethodsOverrider {
         return protocolBridge;
     }
 
-    public final void setProtocolBridge(ProtocolBridge protocolBridge) {
+    public final void setProtocolBridge(ProtocolBridge protocolBridge) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         this.protocolBridge = protocolBridge;
 
         client = new NetworkClient.ClientBuilder()
-                .enableDebugLog()
                 .setEventManager(protocolBridge.getProtocolSettings().eventManager).setPacketHandler(protocolBridge.getProtocolSettings().packetHandler)
-                .setMaxAttempts(10).setAttemptDelayInSeconds(5)
+                .setMaxReconnectAttempts(10).setReconnectDelay(5)
                 .setPort(protocolBridge.getProtocolSettings().port).setHost(protocolBridge.getProtocolSettings().host).
                 build();
     }
@@ -57,7 +56,7 @@ public abstract class ProtocolClient extends DefaultMethodsOverrider {
 
     public final void disconnectClient() throws IOException {
         client.getEventManager().unregisterListener(ClientListener.class);
-        client.disconnect();
+        client.disconnect(true);
     }
     
     public final void resolveSite(RequestDomain requestDomain) throws IOException, ClassNotFoundException {

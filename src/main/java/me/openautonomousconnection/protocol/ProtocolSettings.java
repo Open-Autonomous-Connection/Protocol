@@ -14,7 +14,7 @@ import me.finn.unlegitlibrary.utils.DefaultMethodsOverrider;
 
 public class ProtocolSettings extends DefaultMethodsOverrider {
 
-    public String host = "82.197.95.202";
+    public String host = "45.155.173.50";
     public int port = 8345;
     public PacketHandler packetHandler = new PacketHandler();
     public EventManager eventManager = new EventManager();

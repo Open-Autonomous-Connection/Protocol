@@ -9,6 +9,7 @@
 package me.openautonomousconnection.protocol.packets.v1_0_0;
 
 import me.finn.unlegitlibrary.network.system.packets.Packet;
+import me.finn.unlegitlibrary.network.system.packets.PacketHandler;
 import me.openautonomousconnection.protocol.ProtocolBridge;
 import me.openautonomousconnection.protocol.ProtocolVersion;
 import me.openautonomousconnection.protocol.domain.Domain;
@@ -40,7 +41,7 @@ public class PingPacket extends Packet {
     }
 
     @Override
-    public void write(ObjectOutputStream objectOutputStream) throws IOException, ClassNotFoundException {
+    public void write(PacketHandler packetHandler, ObjectOutputStream objectOutputStream) throws IOException, ClassNotFoundException {
         protocolVersion = ProtocolBridge.getInstance().getProtocolVersion();
 
         if (ProtocolBridge.getInstance().isRunningAsServer()) {
@@ -58,7 +59,7 @@ public class PingPacket extends Packet {
     }
 
     @Override
-    public void read(ObjectInputStream objectInputStream) throws IOException, ClassNotFoundException {
+    public void read(PacketHandler packetHandler, ObjectInputStream objectInputStream) throws IOException, ClassNotFoundException {
         if (ProtocolBridge.getInstance().isRunningAsServer()) {
             clientID = objectInputStream.readInt();
             requestDomain = (RequestDomain) objectInputStream.readObject();
@@ -72,7 +73,7 @@ public class PingPacket extends Packet {
 
             reachable = domain != null;
             ProtocolBridge.getInstance().getProtocolServer().getServer().getEventManager().executeEvent(new PingPacketReceivedEvent(protocolVersion, domain, requestDomain, reachable, clientID));
-            ProtocolBridge.getInstance().getProtocolServer().getServer().getClientHandlerByID(clientID).sendPacket(new PingPacket(requestDomain, domain, reachable));
+            ProtocolBridge.getInstance().getProtocolServer().getServer().getConnectionHandlerByID(clientID).sendPacket(new PingPacket(requestDomain, domain, reachable));
         } else {
             clientID = objectInputStream.readInt();
             requestDomain = (RequestDomain) objectInputStream.readObject();
