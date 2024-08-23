@@ -70,14 +70,13 @@ public class Domain implements Serializable {
 
     @Override
     public final boolean equals(Object obj) {
-        if (!(obj instanceof Domain)) return false;
-        Domain other = (Domain) obj;
+        if (!(obj instanceof Domain other)) return false;
         return other.name.equalsIgnoreCase(name) && other.topLevelDomain.equalsIgnoreCase(topLevelDomain);
     }
 
     @Override
     public final String toString() {
-        return name + "." + topLevelDomain;
+        return "{parsed='" + parsedDestination() + "';real='" + realDestination() + "'}";
     }
 
     @Override

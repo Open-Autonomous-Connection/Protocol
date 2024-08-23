@@ -41,7 +41,9 @@ Discord: https://discord.gg/ef8cyW4t7p
 # Examples
 #### Note: These examples are very basic
 ### Server
+
 ```java
+import me.finn.unlegitlibrary.network.system.server.ConnectionHandler;
 import me.openautonomousconnection.protocol.ProtocolBridge;
 import me.openautonomousconnection.protocol.ProtocolSettings;
 import me.openautonomousconnection.protocol.ProtocolVersion;
@@ -70,8 +72,8 @@ public class Server extends ProtocolServer {
     }
 
     @Override
-    public void handleMessage(int clientID, String message) {
-        System.out.println("Received message: " + message + " from client: " + clientID);
+    public void handleMessage(ConnectionHandler connectionHandler, String message) {
+        System.out.println("Received message: " + message + " from client: " + connectionHandler.getClientID());
     }
 }
 ```

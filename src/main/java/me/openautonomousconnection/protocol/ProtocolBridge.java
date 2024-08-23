@@ -9,6 +9,7 @@
 package me.openautonomousconnection.protocol;
 
 import me.finn.unlegitlibrary.network.system.client.NetworkClient;
+import me.finn.unlegitlibrary.network.system.packets.Packet;
 import me.finn.unlegitlibrary.utils.DefaultMethodsOverrider;
 import me.openautonomousconnection.protocol.listeners.ClientListener;
 import me.openautonomousconnection.protocol.listeners.ServerListener;
@@ -28,7 +29,7 @@ import java.net.URL;
 import java.nio.file.Files;
 
 public class ProtocolBridge extends DefaultMethodsOverrider {
-    private final APIInformation apiInformation;
+    private APIInformation apiInformation;
     private final ProtocolSettings protocolSettings;
     private final ProtocolVersion protocolVersion;
 
@@ -61,25 +62,18 @@ public class ProtocolBridge extends DefaultMethodsOverrider {
         return instance;
     }
 
+    public void registerCustomPacket(Class<? extends Packet> packet) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        protocolSettings.packetHandler.registerPacket(packet);
+    }
+
     public ProtocolBridge(ProtocolVersion protocolVersion, ProtocolSettings protocolSettings, ProtocolClient protocolClient, APIInformation apiInformation) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        checkUpdates();
-        instance = this;
-
-        protocolSettings.packetHandler.registerPacket(DomainPacket.class);
-        protocolSettings.packetHandler.registerPacket(PingPacket.class);
-        protocolSettings.packetHandler.registerPacket(MessagePacket.class);
-
-        this.protocolServer = null;
-
-        this.protocolVersion = protocolVersion;
-        this.protocolSettings = protocolSettings;
+        this(protocolVersion, protocolSettings, protocolClient);
         this.apiInformation = apiInformation;
-        this.protocolClient = protocolClient;
+        instance = this;
     }
 
     public ProtocolBridge(ProtocolVersion protocolVersion, ProtocolSettings protocolSettings, ProtocolClient protocolClient) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         checkUpdates();
-        instance = this;
 
         protocolSettings.packetHandler.registerPacket(DomainPacket.class);
         protocolSettings.packetHandler.registerPacket(PingPacket.class);
@@ -91,15 +85,12 @@ public class ProtocolBridge extends DefaultMethodsOverrider {
         this.protocolSettings = protocolSettings;
         this.apiInformation = null;
         this.protocolClient = protocolClient;
+
+        instance = this;
     }
 
     public ProtocolBridge(ProtocolVersion protocolVersion, ProtocolSettings protocolSettings, ProtocolServer protocolServer) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         checkUpdates();
-        instance = this;
-
-        protocolSettings.packetHandler.registerPacket(DomainPacket.class);
-        protocolSettings.packetHandler.registerPacket(PingPacket.class);
-        protocolSettings.packetHandler.registerPacket(MessagePacket.class);
 
         this.apiInformation = null;
         this.protocolClient = null;
@@ -107,6 +98,18 @@ public class ProtocolBridge extends DefaultMethodsOverrider {
         this.protocolVersion = protocolVersion;
         this.protocolSettings = protocolSettings;
         this.protocolServer = protocolServer;
+
+        protocolSettings.packetHandler.registerPacket(DomainPacket.class);
+        protocolSettings.packetHandler.registerPacket(PingPacket.class);
+        protocolSettings.packetHandler.registerPacket(MessagePacket.class);
+
+        instance = this;
+    }
+
+    public ProtocolBridge(ProtocolVersion protocolVersion, ProtocolSettings protocolSettings, ProtocolServer protocolServer, APIInformation apiInformation) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        this(protocolVersion, protocolSettings, protocolServer);
+        this.apiInformation = apiInformation;
+        instance = this;
     }
 
     private final void checkUpdates() {
