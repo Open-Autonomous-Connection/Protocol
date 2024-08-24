@@ -20,7 +20,6 @@ import me.openautonomousconnection.protocol.listeners.ServerListener;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.*;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 

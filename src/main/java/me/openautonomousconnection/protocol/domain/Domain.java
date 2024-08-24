@@ -41,7 +41,7 @@ public class Domain implements Serializable {
 
     public final String getPath() {
         if (path.endsWith("/")) return path.substring(0, path.length() - "/".length());
-        if (path.startsWith("/")) return path.substring( "/".length());
+        if (path.startsWith("/")) return path.substring("/".length());
         return path;
     }
 
