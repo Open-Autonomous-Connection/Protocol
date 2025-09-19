@@ -1,7 +1,6 @@
 package github.openautonomousconnection.protocol.side;
 
 import github.openautonomousconnection.protocol.ProtocolBridge;
-import github.openautonomousconnection.protocol.handle.ClassicHandler;
 import lombok.Getter;
 import me.finn.unlegitlibrary.network.system.server.NetworkServer;
 

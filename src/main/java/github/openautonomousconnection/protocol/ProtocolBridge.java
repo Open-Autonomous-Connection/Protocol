@@ -1,6 +1,6 @@
 package github.openautonomousconnection.protocol;
 
-import github.openautonomousconnection.protocol.handle.ClassicHandler;
+import github.openautonomousconnection.protocol.handle.ClassicHandlerServer;
 import github.openautonomousconnection.protocol.side.ProtocolClient;
 import github.openautonomousconnection.protocol.side.ProtocolServer;
 import lombok.Getter;
@@ -28,7 +28,7 @@ public class ProtocolBridge {
     private final Logger logger;
 
     @Getter @Setter
-    private ClassicHandler classicHandler;
+    private ClassicHandlerServer classicHandlerServer;
 
     public ProtocolBridge(ProtocolServer protocolServer, ProtocolSettings protocolSettings, ProtocolVersion protocolVersion, File logFolder) {
         this.protocolServer = protocolServer;
@@ -72,6 +72,16 @@ public class ProtocolBridge {
             this.logger.error("Invalid protocol version '" + protocolVersion.toString() + "'!");
             System.exit(1);
         }
+    }
+
+    private boolean isClassic() {
+        boolean yes = false;
+        for (ProtocolVersion compatibleVersion : protocolVersion.getCompatibleVersions()) {
+            yes = compatibleVersion.getProtocolType() == ProtocolVersion.ProtocolType.CLASSIC;
+            if (yes) break;
+        }
+
+        return protocolVersion.getProtocolType() == ProtocolVersion.ProtocolType.CLASSIC || yes;
     }
 
     public boolean isRunningAsServer() {
