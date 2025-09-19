@@ -24,6 +24,15 @@
         </repository>
     </repositories>
 
+    <profiles>
+        <profile>
+            <id>github</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+    </profiles>
+
     <distributionManagement>
         <repository>
             <id>github</id>
