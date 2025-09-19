@@ -1,6 +1,9 @@
 package github.openautonomousconnection.protocol;
 
 import github.openautonomousconnection.protocol.handle.ClassicHandlerServer;
+import github.openautonomousconnection.protocol.packets.v1_0_0.classic.Classic_DomainPacket;
+import github.openautonomousconnection.protocol.packets.v1_0_0.classic.Classic_MessagePacket;
+import github.openautonomousconnection.protocol.packets.v1_0_0.classic.Classic_PingPacket;
 import github.openautonomousconnection.protocol.side.ProtocolClient;
 import github.openautonomousconnection.protocol.side.ProtocolServer;
 import lombok.Getter;
@@ -30,6 +33,9 @@ public class ProtocolBridge {
     @Getter @Setter
     private ClassicHandlerServer classicHandlerServer;
 
+    @Getter
+    private static ProtocolBridge instance;
+
     public ProtocolBridge(ProtocolServer protocolServer, ProtocolSettings protocolSettings, ProtocolVersion protocolVersion, File logFolder) {
         this.protocolServer = protocolServer;
         this.protocolSettings = protocolSettings;
@@ -50,6 +56,8 @@ public class ProtocolBridge {
             this.logger.error("Invalid protocol version '" + protocolVersion.toString() + "'!");
             System.exit(1);
         }
+
+        instance = this;
     }
 
     public ProtocolBridge(ProtocolClient protocolClient, ProtocolSettings protocolSettings, ProtocolVersion protocolVersion, File logFolder) {
@@ -72,9 +80,17 @@ public class ProtocolBridge {
             this.logger.error("Invalid protocol version '" + protocolVersion.toString() + "'!");
             System.exit(1);
         }
+
+        if (isClassicSupported()) {
+            protocolSettings.packetHandler.registerPacket(new Classic_DomainPacket());
+            protocolSettings.packetHandler.registerPacket(new Classic_MessagePacket());
+            protocolSettings.packetHandler.registerPacket(new Classic_PingPacket());
+        }
+
+        instance = this;
     }
 
-    private boolean isClassic() {
+    public boolean isClassicSupported() {
         boolean yes = false;
         for (ProtocolVersion compatibleVersion : protocolVersion.getCompatibleVersions()) {
             yes = compatibleVersion.getProtocolType() == ProtocolVersion.ProtocolType.CLASSIC;

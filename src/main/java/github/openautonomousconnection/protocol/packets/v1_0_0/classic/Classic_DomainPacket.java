@@ -3,7 +3,7 @@ package github.openautonomousconnection.protocol.packets.v1_0_0.classic;
 import github.openautonomousconnection.protocol.ProtocolBridge;
 import github.openautonomousconnection.protocol.ProtocolVersion;
 import github.openautonomousconnection.protocol.classic.Classic_Domain;
-import github.openautonomousconnection.protocol.classic.Classic_PingPacketReceivedEvent;
+import github.openautonomousconnection.protocol.classic.Classic_DomainPacketReceivedEvent;
 import github.openautonomousconnection.protocol.classic.Classic_ProtocolVersion;
 import github.openautonomousconnection.protocol.classic.Classic_RequestDomain;
 import github.openautonomousconnection.protocol.packets.OACPacket;
@@ -14,20 +14,21 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.sql.SQLException;
 
-public class PingPacket extends OACPacket {
+// ProtocolVersion 1.0.0-CLASSIC is ProtocolSide Server only
+public class Classic_DomainPacket extends OACPacket {
     private Classic_RequestDomain requestDomain;
     private Classic_Domain domain;
     private int clientID;
-    private boolean reachable;
-    private Classic_ProtocolVersion protocolVersion;
 
-    public PingPacket(ProtocolBridge protocolBridge, Classic_RequestDomain requestDomain, Classic_Domain domain, boolean reachable) {
-        super(1, ProtocolVersion.ProtocolType.CLASSIC, protocolBridge);
-
+    public Classic_DomainPacket(int toClient, Classic_RequestDomain requestDomain, Classic_Domain domain) {
+        this();
+        this.clientID = toClient;
         this.requestDomain = requestDomain;
         this.domain = domain;
-        this.reachable = reachable;
-        this.protocolVersion = Classic_ProtocolVersion.PV_1_0_0;
+    }
+
+    public Classic_DomainPacket() {
+        super(2, ProtocolVersion.ProtocolType.CLASSIC);
     }
 
     @Override
@@ -35,24 +36,23 @@ public class PingPacket extends OACPacket {
         objectOutputStream.writeInt(clientID);
         objectOutputStream.writeObject(requestDomain);
         objectOutputStream.writeObject(domain);
-        objectOutputStream.writeBoolean(reachable);
-        objectOutputStream.writeObject(protocolVersion);
+
+        objectOutputStream.writeObject(Classic_ProtocolVersion.PV_1_0_0);
     }
 
     @Override
     public void read(PacketHandler packetHandler, ObjectInputStream objectInputStream) throws IOException, ClassNotFoundException {
         clientID = objectInputStream.readInt();
         requestDomain = (Classic_RequestDomain) objectInputStream.readObject();
-        protocolVersion = (Classic_ProtocolVersion) objectInputStream.readObject();
+        Classic_ProtocolVersion protocolVersion = (Classic_ProtocolVersion) objectInputStream.readObject();
 
         try {
-            domain = getProtocolBridge().getClassicHandlerServer().ping(requestDomain);
+            domain = ProtocolBridge.getInstance().getClassicHandlerServer().getDomain(requestDomain);
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
 
-        reachable = domain != null;
-        getProtocolBridge().getProtocolServer().getNetworkServer().getEventManager().executeEvent(new Classic_PingPacketReceivedEvent(protocolVersion, domain, requestDomain, reachable, clientID));
-        getProtocolBridge().getProtocolServer().getNetworkServer().getConnectionHandlerByID(clientID).sendPacket(new PingPacket(getProtocolBridge(), requestDomain, domain, reachable));
+        ProtocolBridge.getInstance().getProtocolServer().getNetworkServer().getEventManager().executeEvent(new Classic_DomainPacketReceivedEvent(protocolVersion, domain, requestDomain, clientID));
+        ProtocolBridge.getInstance().getProtocolServer().getNetworkServer().getConnectionHandlerByID(clientID).sendPacket(new Classic_DomainPacket(clientID, requestDomain, domain));
     }
 }

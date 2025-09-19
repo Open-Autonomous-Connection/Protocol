@@ -8,12 +8,9 @@ import me.finn.unlegitlibrary.network.system.packets.Packet;
 public abstract class OACPacket extends Packet {
     @Getter
     private final ProtocolVersion.ProtocolType packetType;
-    @Getter
-    private final ProtocolBridge protocolBridge;
 
-    public OACPacket(int id, ProtocolVersion.ProtocolType packetType, ProtocolBridge protocolBridge) {
+    public OACPacket(int id, ProtocolVersion.ProtocolType packetType) {
         super(id);
         this.packetType = packetType;
-        this.protocolBridge = protocolBridge;
     }
 }

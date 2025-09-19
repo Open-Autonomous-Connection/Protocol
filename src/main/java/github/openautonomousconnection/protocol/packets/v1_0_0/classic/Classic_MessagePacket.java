@@ -11,14 +11,18 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 // ProtocolVersion 1.0.0-CLASSIC is ProtocolSide Server only
-public class MessagePacket extends OACPacket {
-    private final String message;
-    private final int clientID;
+public class Classic_MessagePacket extends OACPacket {
+    private String message;
+    private int clientID;
 
-    public MessagePacket(String message, int toClient, ProtocolBridge protocolBridge) {
-        super(3, ProtocolVersion.ProtocolType.CLASSIC, protocolBridge);
+    public Classic_MessagePacket(String message, int toClient) {
+        this();
         this.message = message;
         this.clientID = toClient;
+    }
+
+    public Classic_MessagePacket() {
+        super(3, ProtocolVersion.ProtocolType.CLASSIC);
     }
 
     @Override
@@ -35,6 +39,6 @@ public class MessagePacket extends OACPacket {
         String message = objectInputStream.readUTF();
         Classic_ProtocolVersion protocolVersion = (Classic_ProtocolVersion) objectInputStream.readObject();
 
-        getProtocolBridge().getClassicHandlerServer().handleMessage(getProtocolBridge().getProtocolServer().getNetworkServer().getConnectionHandlerByID(clientID), message);
+        ProtocolBridge.getInstance().getClassicHandlerServer().handleMessage(ProtocolBridge.getInstance().getProtocolServer().getNetworkServer().getConnectionHandlerByID(clientID), message);
     }
 }
