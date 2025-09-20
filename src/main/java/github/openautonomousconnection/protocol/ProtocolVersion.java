@@ -3,6 +3,7 @@ package github.openautonomousconnection.protocol;
 import lombok.Getter;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,8 +25,7 @@ public enum ProtocolVersion implements Serializable {
         this.version = version;
         this.protocolType = protocolType;
         this.protocolSide = protocolSide;
-        this.compatibleVersions = Arrays.stream(compatibleVersions).toList();
-        if (!this.compatibleVersions.contains(this)) this.compatibleVersions.add(this);
+        this.compatibleVersions = new ArrayList<>(Arrays.stream(new ProtocolVersion[] { this }).toList());
     }
 
     @Override
