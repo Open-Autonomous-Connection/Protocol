@@ -14,16 +14,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <repositories>
-        <repository>
-            <id>github</id>
-            <url>https://maven.pkg.github.com/unlegitdqrk/unlegitlibrary</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-
     <profiles>
         <profile>
             <id>github</id>
@@ -36,10 +26,18 @@
     <distributionManagement>
         <repository>
             <id>github</id>
-            <name>Protocol</name>
+            <name>protocol</name>
             <url>https://maven.pkg.github.com/open-autonomous-connection/protocol</url>
         </repository>
     </distributionManagement>
+
+    <licenses>
+        <license>
+            <name>Open Autonomous Public License</name>
+            <url>https://github.com/Open-Autonomous-Connection/OAPL/blob/main/LICENSE</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
     <dependencies>
         <dependency>
