@@ -1,9 +1,11 @@
 package github.openautonomousconnection.protocol.side.server;
 
 import github.openautonomousconnection.protocol.ProtocolBridge;
+import github.openautonomousconnection.protocol.versions.v1_0_0.beta.DNSResponseCode;
 import github.openautonomousconnection.protocol.versions.v1_0_0.beta.Domain;
 import lombok.Getter;
 import me.finn.unlegitlibrary.file.ConfigurationManager;
+import me.finn.unlegitlibrary.network.system.server.ConnectionHandler;
 import me.finn.unlegitlibrary.network.system.server.NetworkServer;
 import me.finn.unlegitlibrary.utils.DefaultMethodsOverrider;
 
@@ -60,4 +62,7 @@ public abstract class ProtocolServer extends DefaultMethodsOverrider {
     public abstract String getDomainDestination(Domain domain);
     public abstract String getSubnameDestination(Domain domain, String subname);
     public abstract String getTLNInfoSite(String topLevelName);
+    public abstract DNSResponseCode validateDomain(Domain requestedDomain);
+    public abstract void validationFailed(Domain domain, ConnectedProtocolClient client, Exception exception);
+    public abstract void getDomainDestinationFailed(ConnectedProtocolClient client, Domain domain, DNSResponseCode validationResponse, Exception exception);
 }

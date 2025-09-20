@@ -44,7 +44,7 @@ public class Classic_MessagePacket extends OACPacket {
             String message = objectInputStream.readUTF();
             Classic_ProtocolVersion protocolVersion = (Classic_ProtocolVersion) objectInputStream.readObject();
 
-            ProtocolBridge.getInstance().getClassicHandlerServer().handleMessage(ProtocolBridge.getInstance().getProtocolServer().getNetworkServer().getConnectionHandlerByID(clientID), message, protocolVersion);
+            ProtocolBridge.getInstance().getClassicHandlerServer().handleMessage(ProtocolBridge.getInstance().getProtocolServer().getClientByID(clientID), message, protocolVersion);
         } else {
             clientID = objectInputStream.readInt();
             String message = objectInputStream.readUTF();

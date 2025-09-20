@@ -39,9 +39,13 @@ public abstract class OACPacket extends Packet {
     @Override
     public final void read(PacketHandler packetHandler, ObjectInputStream objectInputStream) throws IOException, ClassNotFoundException {
         onRead(packetHandler, objectInputStream);
-        if (protocolVersion != ProtocolVersion.PV_1_0_0_CLASSIC) responseCode = (DNSResponseCode) objectInputStream.readObject();
+        if (protocolVersion != ProtocolVersion.PV_1_0_0_CLASSIC) {
+            responseCode = (DNSResponseCode) objectInputStream.readObject();
+            onResponseCodeRead(packetHandler, objectInputStream);
+        }
     }
 
     public abstract void onWrite(PacketHandler packetHandler, ObjectOutputStream objectOutputStream) throws IOException, ClassNotFoundException;
     public abstract void onRead(PacketHandler packetHandler, ObjectInputStream objectInputStream) throws IOException, ClassNotFoundException;
+    protected void onResponseCodeRead(PacketHandler packetHandler, ObjectInputStream objectInputStream) {}
 }

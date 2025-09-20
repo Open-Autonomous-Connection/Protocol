@@ -27,6 +27,7 @@ public class UnsupportedClassicPacket extends OACPacket {
 
     @Override
     public void onWrite(PacketHandler packetHandler, ObjectOutputStream objectOutputStream) throws IOException, ClassNotFoundException {
+        if (ProtocolBridge.getInstance().isRunningAsClient()) objectOutputStream.writeInt(ProtocolBridge.getInstance().getProtocolClient().getNetworkClient().getClientID());
         objectOutputStream.writeUTF(unsupportedClassicPacket.getName());
         objectOutputStream.writeInt(content.length);
         for (Object o : content) objectOutputStream.writeObject(o);
@@ -35,6 +36,8 @@ public class UnsupportedClassicPacket extends OACPacket {
 
     @Override
     public void onRead(PacketHandler packetHandler, ObjectInputStream objectInputStream) throws IOException, ClassNotFoundException {
+        int clientID = 0;
+        if (ProtocolBridge.getInstance().isRunningAsServer()) clientID = objectInputStream.readInt();
         String className = objectInputStream.readUTF();
         int size = objectInputStream.readInt();
         content = new Object[size];
@@ -43,6 +46,7 @@ public class UnsupportedClassicPacket extends OACPacket {
             content[i] = objectInputStream.readObject();
         }
 
-        ProtocolBridge.getInstance().getClassicHandlerClient().unsupportedClassicPacket(className, content);
+        if (ProtocolBridge.getInstance().isRunningAsServer()) ProtocolBridge.getInstance().getClassicHandlerServer().unsupportedClassicPacket(className, content, ProtocolBridge.getInstance().getProtocolServer().getClientByID(clientID));
+        else ProtocolBridge.getInstance().getClassicHandlerClient().unsupportedClassicPacket(className, content);
     }
 }

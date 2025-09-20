@@ -85,7 +85,10 @@ public class Domain implements Serializable {
                 domain.getTopLevelName().equalsIgnoreCase(this.topLevelName) && domain.getProtocol().equalsIgnoreCase(this.protocol);
     }
 
+
     public final String getDestination() {
+        if (ProtocolBridge.getInstance().isRunningAsClient()) return DNSResponseCode.RESPONSE_INVALID_REQUEST.toString();
+
         if (this.equals(DefaultDomains.DNS_INFO_SITE)) return ProtocolBridge.getInstance().getProtocolServer().getDNSInfoSite();
         if (this.equals(DefaultDomains.DNS_REGISTER_SITE)) return ProtocolBridge.getInstance().getProtocolServer().getDNSRegisterSite();
         if (this.name.equalsIgnoreCase("about") && this.protocol.equalsIgnoreCase("oac")) return ProtocolBridge.getInstance().getProtocolServer().getTLNInfoSite(topLevelName);

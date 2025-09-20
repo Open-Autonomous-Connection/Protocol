@@ -2,16 +2,19 @@ package github.openautonomousconnection.protocol.versions.v1_0_0.beta;
 
 import lombok.Getter;
 
-public enum DNSResponseCode {
+import java.io.Serializable;
+
+public enum DNSResponseCode implements Serializable {
     RESPONSE_NOT_REQUIRED(0, "Response code not required"),
+    RESPONSE_INVALID_REQUEST(1, "Invalid request"),
 
-    RESPONSE_AUTH_SUCCESS(1, "Auth success"),
-    RESPONSE_AUTH_FAILED(2, "Auth failed"),
+    RESPONSE_AUTH_SUCCESS(4, "Auth success"),
+    RESPONSE_AUTH_FAILED(5, "Auth failed"),
 
-    RESPONSE_DOMAIN_EXIST(100, "Domain exist"),
-    RESPONSE_DOMAIN_NOT_EXIST(101, "Domain does not exist"),
-    RESPONSE_DOMAIN_CREATED(105, "Domain created"),
-    RESPONSE_DOMAIN_DELETED(106, "Domain deleted"),
+    RESPONSE_DOMAIN_NAME_EXIST(100, "Domainname exist"),
+    RESPONSE_DOMAIN_NAME_NOT_EXIST(101, "Domainname does not exist"),
+    RESPONSE_DOMAIN_NAME_CREATED(105, "Domainname created"),
+    RESPONSE_DOMAIN_NAME_DELETED(106, "Domainname deleted"),
 
     RESPONSE_DOMAIN_TLN_EXIST(110, "TopLevelName exist"),
     RESPONSE_DOMAIN_TLN_NOT_EXIST(111, "TopLevelName does not exist"),
@@ -22,6 +25,9 @@ public enum DNSResponseCode {
     RESPONSE_DOMAIN_SUBNAME_NOT_EXIST(121, "Subname does not exist"),
     RESPONSE_DOMAIN_SUBNAME_CREATED(125, "Subname created"),
     RESPONSE_DOMAIN_SUBNAME_DELETED(126, "Subname deleted"),
+
+    RESPONSE_DOMAIN_FULLY_EXIST(130, "Full domain exist"),
+    RESPONSE_DOMAIN_FULLY_NOT_EXIST(131, "Full domain does not exist")
     ;
 
     @Getter

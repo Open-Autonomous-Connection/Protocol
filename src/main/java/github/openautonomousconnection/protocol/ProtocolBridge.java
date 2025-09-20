@@ -3,7 +3,13 @@ package github.openautonomousconnection.protocol;
 import github.openautonomousconnection.protocol.listeners.ClientListener;
 import github.openautonomousconnection.protocol.listeners.ServerListener;
 import github.openautonomousconnection.protocol.packets.OACPacket;
+import github.openautonomousconnection.protocol.packets.v1_0_0.beta.AuthPacket;
+import github.openautonomousconnection.protocol.packets.v1_0_0.beta.GetDestinationPacket;
+import github.openautonomousconnection.protocol.packets.v1_0_0.beta.UnsupportedClassicPacket;
+import github.openautonomousconnection.protocol.packets.v1_0_0.beta.ValidateDomainPacket;
 import github.openautonomousconnection.protocol.versions.ProtocolVersion;
+import github.openautonomousconnection.protocol.versions.v1_0_0.beta.DNSResponseCode;
+import github.openautonomousconnection.protocol.versions.v1_0_0.beta.Domain;
 import github.openautonomousconnection.protocol.versions.v1_0_0.classic.ClassicHandlerClient;
 import github.openautonomousconnection.protocol.versions.v1_0_0.classic.ClassicHandlerServer;
 import github.openautonomousconnection.protocol.packets.v1_0_0.classic.Classic_DomainPacket;
@@ -66,17 +72,8 @@ public class ProtocolBridge {
             System.exit(1);
         }
 
-        if (isClassicSupported()) {
-            protocolSettings.eventManager.unregisterListener(new Classic_ClientListener());
-
-            Classic_DomainPacket cDomainPacket = new Classic_DomainPacket();
-            Classic_DomainPacket cMessagePacket = new Classic_DomainPacket();
-            Classic_DomainPacket cPingPacket = new Classic_DomainPacket();
-
-            if (isPacketSupported(cDomainPacket)) protocolSettings.packetHandler.registerPacket(cDomainPacket);
-            if (isPacketSupported(cMessagePacket)) protocolSettings.packetHandler.registerPacket(cMessagePacket);
-            if (isPacketSupported(cPingPacket)) protocolSettings.packetHandler.registerPacket(cPingPacket);
-        }
+        if (isClassicSupported()) protocolSettings.eventManager.unregisterListener(new Classic_ClientListener());
+        registerPackets();
 
         instance = this;
     }
@@ -104,19 +101,32 @@ public class ProtocolBridge {
             System.exit(1);
         }
 
-        if (isClassicSupported()) {
-            protocolSettings.eventManager.registerListener(new Classic_ClientListener());
-
-            Classic_DomainPacket cDomainPacket = new Classic_DomainPacket();
-            Classic_DomainPacket cMessagePacket = new Classic_DomainPacket();
-            Classic_DomainPacket cPingPacket = new Classic_DomainPacket();
-
-            if (isPacketSupported(cDomainPacket)) protocolSettings.packetHandler.registerPacket(cDomainPacket);
-            if (isPacketSupported(cMessagePacket)) protocolSettings.packetHandler.registerPacket(cMessagePacket);
-            if (isPacketSupported(cPingPacket)) protocolSettings.packetHandler.registerPacket(cPingPacket);
-        }
+        if (isClassicSupported()) protocolSettings.eventManager.registerListener(new Classic_ClientListener());
+        registerPackets();
 
         instance = this;
+    }
+
+    private void registerPackets() {
+        // Classic packets
+        Classic_DomainPacket cDomainPacket = new Classic_DomainPacket();
+        Classic_DomainPacket cMessagePacket = new Classic_DomainPacket();
+        Classic_DomainPacket cPingPacket = new Classic_DomainPacket();
+
+        if (isPacketSupported(cDomainPacket)) protocolSettings.packetHandler.registerPacket(cDomainPacket);
+        if (isPacketSupported(cMessagePacket)) protocolSettings.packetHandler.registerPacket(cMessagePacket);
+        if (isPacketSupported(cPingPacket)) protocolSettings.packetHandler.registerPacket(cPingPacket);
+
+        // 1.0.0-BETA packets
+        AuthPacket v100bAuthPath = new AuthPacket();
+        UnsupportedClassicPacket v100bUnsupportedClassicPacket = new UnsupportedClassicPacket();
+        ValidateDomainPacket v100bValidateDomainPacket = new ValidateDomainPacket();
+        GetDestinationPacket v100bGetDestinationPacket = new GetDestinationPacket();
+
+        if (isPacketSupported(v100bAuthPath)) protocolSettings.packetHandler.registerPacket(v100bAuthPath);
+        if (isPacketSupported(v100bUnsupportedClassicPacket)) protocolSettings.packetHandler.registerPacket(v100bUnsupportedClassicPacket);
+        if (isPacketSupported(v100bValidateDomainPacket)) protocolSettings.packetHandler.registerPacket(v100bValidateDomainPacket);
+        if (isPacketSupported(v100bGetDestinationPacket)) protocolSettings.packetHandler.registerPacket(v100bGetDestinationPacket);
     }
 
     public boolean isPacketSupported(OACPacket packet) {

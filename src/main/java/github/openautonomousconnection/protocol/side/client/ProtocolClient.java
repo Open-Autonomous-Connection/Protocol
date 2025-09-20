@@ -2,15 +2,19 @@ package github.openautonomousconnection.protocol.side.client;
 
 import github.openautonomousconnection.protocol.ProtocolBridge;
 import github.openautonomousconnection.protocol.packets.OACPacket;
+import github.openautonomousconnection.protocol.packets.v1_0_0.beta.ValidateDomainPacket;
 import github.openautonomousconnection.protocol.versions.ProtocolVersion;
+import github.openautonomousconnection.protocol.versions.v1_0_0.beta.DNSResponseCode;
+import github.openautonomousconnection.protocol.versions.v1_0_0.beta.Domain;
 import lombok.Getter;
 import me.finn.unlegitlibrary.network.system.client.NetworkClient;
 import me.finn.unlegitlibrary.network.system.client.events.ClientDisconnectedEvent;
 import me.finn.unlegitlibrary.utils.DefaultMethodsOverrider;
 
 import java.io.File;
+import java.io.IOException;
 
-public class ProtocolClient extends DefaultMethodsOverrider {
+public abstract class ProtocolClient extends DefaultMethodsOverrider {
     private ProtocolVersion serverVersion = null;
 
     @Getter
@@ -78,6 +82,10 @@ public class ProtocolClient extends DefaultMethodsOverrider {
         return getServerVersion() == targetVersion || getServerVersion().getCompatibleVersions().contains(targetVersion);
     }
 
+    public final void validateDomain(Domain domain) throws IOException, ClassNotFoundException {
+        networkClient.sendPacket(new ValidateDomainPacket(domain));
+    }
+
     public ProtocolClient(File caFolder, File certificatesClientFolder, File certificatesKeyFolder) {
         if (!caFolder.exists()) caFolder.mkdirs();
         if (!certificatesClientFolder.exists()) certificatesClientFolder.mkdirs();
@@ -89,4 +97,7 @@ public class ProtocolClient extends DefaultMethodsOverrider {
                 setRootCAFolder(caFolder).setClientCertificatesFolder(certificatesClientFolder, certificatesKeyFolder).
                 build();
     }
+
+    public abstract void validationCompleted(Domain domain, DNSResponseCode responseCode);
+    public abstract void getDestinationCompleted(Domain domain, String destination, DNSResponseCode validationResponse);
 }
