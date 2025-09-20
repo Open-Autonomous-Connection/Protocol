@@ -6,6 +6,7 @@ import github.openautonomousconnection.protocol.side.client.events.ConnectedToPr
 import github.openautonomousconnection.protocol.side.server.ConnectedProtocolClient;
 import github.openautonomousconnection.protocol.side.server.events.ProtocolClientConnected;
 import github.openautonomousconnection.protocol.versions.ProtocolVersion;
+import github.openautonomousconnection.protocol.versions.v1_0_0.beta.DNSResponseCode;
 import me.finn.unlegitlibrary.network.system.packets.PacketHandler;
 import me.finn.unlegitlibrary.network.system.server.ConnectionHandler;
 
@@ -20,7 +21,7 @@ public class AuthPacket extends OACPacket {
     }
 
     @Override
-    public void write(PacketHandler packetHandler, ObjectOutputStream objectOutputStream) throws IOException, ClassNotFoundException {
+    public void onWrite(PacketHandler packetHandler, ObjectOutputStream objectOutputStream) throws IOException, ClassNotFoundException {
         if (ProtocolBridge.getInstance().isRunningAsServer()) objectOutputStream.writeObject(ProtocolBridge.getInstance().getProtocolVersion());
         else {
             objectOutputStream.writeInt(ProtocolBridge.getInstance().getProtocolClient().getNetworkClient().getClientID());
@@ -29,14 +30,17 @@ public class AuthPacket extends OACPacket {
     }
 
     @Override
-    public void read(PacketHandler packetHandler, ObjectInputStream objectInputStream) throws IOException, ClassNotFoundException {
+    public void onRead(PacketHandler packetHandler, ObjectInputStream objectInputStream) throws IOException, ClassNotFoundException {
         if (ProtocolBridge.getInstance().isRunningAsServer()) {
             int clientID = objectInputStream.readInt();
             ProtocolVersion clientVersion = (ProtocolVersion) objectInputStream.readObject();
             ConnectionHandler connectionHandler = ProtocolBridge.getInstance().getProtocolServer().getNetworkServer().getConnectionHandlerByID(clientID);
 
-            if (!ProtocolBridge.getInstance().isVersionSupported(clientVersion)) connectionHandler.disconnect();
-            else {
+            if (!ProtocolBridge.getInstance().isVersionSupported(clientVersion)) {
+                setResponseCode(DNSResponseCode.RESPONSE_AUTH_FAILED);
+                connectionHandler.disconnect();
+            } else {
+                setResponseCode(DNSResponseCode.RESPONSE_AUTH_SUCCESS);
                 ConnectedProtocolClient client = ProtocolBridge.getInstance().getProtocolServer().getClientByID(clientID);
                 client.setClientVersion(clientVersion);
                 ProtocolBridge.getInstance().getProtocolSettings().eventManager.executeEvent(new ProtocolClientConnected(client));
@@ -44,8 +48,11 @@ public class AuthPacket extends OACPacket {
         } else {
             ProtocolVersion serverVersion = (ProtocolVersion) objectInputStream.readObject();
 
-            if (!ProtocolBridge.getInstance().isVersionSupported(serverVersion)) ProtocolBridge.getInstance().getProtocolClient().getNetworkClient().disconnect();
-            else {
+            if (!ProtocolBridge.getInstance().isVersionSupported(serverVersion)) {
+                setResponseCode(DNSResponseCode.RESPONSE_AUTH_FAILED);
+                ProtocolBridge.getInstance().getProtocolClient().getNetworkClient().disconnect();
+            } else {
+                setResponseCode(DNSResponseCode.RESPONSE_AUTH_SUCCESS);
                 ProtocolBridge.getInstance().getProtocolClient().setServerVersion(serverVersion);
                 ProtocolBridge.getInstance().getProtocolSettings().eventManager.executeEvent(new ConnectedToProtocolServer());
             }

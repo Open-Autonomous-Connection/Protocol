@@ -6,7 +6,6 @@ import github.openautonomousconnection.protocol.versions.ProtocolVersion;
 import lombok.Getter;
 import me.finn.unlegitlibrary.network.system.client.NetworkClient;
 import me.finn.unlegitlibrary.network.system.client.events.ClientDisconnectedEvent;
-import me.finn.unlegitlibrary.network.system.server.NetworkServer;
 import me.finn.unlegitlibrary.utils.DefaultMethodsOverrider;
 
 import java.io.File;
@@ -17,11 +16,11 @@ public class ProtocolClient extends DefaultMethodsOverrider {
     @Getter
     private final NetworkClient networkClient;
 
-    public ProtocolVersion getServerVersion() {
+    public final ProtocolVersion getServerVersion() {
         return serverVersion == null ? ProtocolVersion.PV_1_0_0_CLASSIC : serverVersion;
     }
 
-    public void setServerVersion(ProtocolVersion serverVersion) {
+    public final void setServerVersion(ProtocolVersion serverVersion) {
         if (serverVersion == null) this.serverVersion = serverVersion;
     }
 
@@ -29,11 +28,11 @@ public class ProtocolClient extends DefaultMethodsOverrider {
         serverVersion = null;
     }
 
-    public boolean isStableServer() {
+    public final boolean isStableServer() {
         return !isBetaServer() && !isClassicServer();
     }
 
-    public boolean serverSupportStable() {
+    public final boolean serverSupportStable() {
         boolean yes = false;
         for (ProtocolVersion compatibleVersion : getServerVersion().getCompatibleVersions()) {
             yes = compatibleVersion.getProtocolType() == ProtocolVersion.ProtocolType.STABLE;
@@ -43,11 +42,11 @@ public class ProtocolClient extends DefaultMethodsOverrider {
         return isStableServer() || yes;
     }
 
-    public boolean isBetaServer() {
+    public final boolean isBetaServer() {
         return getServerVersion().getProtocolType() == ProtocolVersion.ProtocolType.BETA;
     }
 
-    public boolean serverSupportBeta() {
+    public final boolean serverSupportBeta() {
         boolean yes = false;
         for (ProtocolVersion compatibleVersion : getServerVersion().getCompatibleVersions()) {
             yes = compatibleVersion.getProtocolType() == ProtocolVersion.ProtocolType.BETA;
@@ -57,11 +56,11 @@ public class ProtocolClient extends DefaultMethodsOverrider {
         return isBetaServer() || yes;
     }
 
-    public boolean isClassicServer() {
+    public final boolean isClassicServer() {
         return getServerVersion().getProtocolType() == ProtocolVersion.ProtocolType.CLASSIC;
     }
 
-    public boolean serverSupportClassic() {
+    public final boolean serverSupportClassic() {
         boolean yes = false;
         for (ProtocolVersion compatibleVersion : getServerVersion().getCompatibleVersions()) {
             yes = compatibleVersion.getProtocolType() == ProtocolVersion.ProtocolType.CLASSIC;
@@ -71,15 +70,19 @@ public class ProtocolClient extends DefaultMethodsOverrider {
         return isClassicServer() || yes;
     }
 
-    public boolean isPacketSupported(OACPacket packet) {
+    public final boolean isPacketSupported(OACPacket packet) {
         return isVersionSupported(packet.getProtocolVersion());
     }
 
-    public boolean isVersionSupported(ProtocolVersion targetVersion) {
+    public final boolean isVersionSupported(ProtocolVersion targetVersion) {
         return getServerVersion() == targetVersion || getServerVersion().getCompatibleVersions().contains(targetVersion);
     }
 
     public ProtocolClient(File caFolder, File certificatesClientFolder, File certificatesKeyFolder) {
+        if (!caFolder.exists()) caFolder.mkdirs();
+        if (!certificatesClientFolder.exists()) certificatesClientFolder.mkdirs();
+        if (!certificatesKeyFolder.exists()) certificatesKeyFolder.mkdirs();
+
         networkClient = new NetworkClient.ClientBuilder().setLogger(ProtocolBridge.getInstance().getLogger()).
                 setHost(ProtocolBridge.getInstance().getProtocolSettings().host).setPort(ProtocolBridge.getInstance().getProtocolSettings().port).
                 setPacketHandler(ProtocolBridge.getInstance().getProtocolSettings().packetHandler).setEventManager(ProtocolBridge.getInstance().getProtocolSettings().eventManager).

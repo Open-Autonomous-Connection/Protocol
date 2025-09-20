@@ -9,6 +9,7 @@ import github.openautonomousconnection.protocol.versions.v1_0_0.classic.ClassicH
 import github.openautonomousconnection.protocol.packets.v1_0_0.classic.Classic_DomainPacket;
 import github.openautonomousconnection.protocol.side.client.ProtocolClient;
 import github.openautonomousconnection.protocol.side.server.ProtocolServer;
+import github.openautonomousconnection.protocol.versions.v1_0_0.classic.Classic_ClientListener;
 import lombok.Getter;
 import lombok.Setter;
 import me.finn.unlegitlibrary.utils.Logger;
@@ -65,6 +66,18 @@ public class ProtocolBridge {
             System.exit(1);
         }
 
+        if (isClassicSupported()) {
+            protocolSettings.eventManager.unregisterListener(new Classic_ClientListener());
+
+            Classic_DomainPacket cDomainPacket = new Classic_DomainPacket();
+            Classic_DomainPacket cMessagePacket = new Classic_DomainPacket();
+            Classic_DomainPacket cPingPacket = new Classic_DomainPacket();
+
+            if (isPacketSupported(cDomainPacket)) protocolSettings.packetHandler.registerPacket(cDomainPacket);
+            if (isPacketSupported(cMessagePacket)) protocolSettings.packetHandler.registerPacket(cMessagePacket);
+            if (isPacketSupported(cPingPacket)) protocolSettings.packetHandler.registerPacket(cPingPacket);
+        }
+
         instance = this;
     }
 
@@ -92,6 +105,8 @@ public class ProtocolBridge {
         }
 
         if (isClassicSupported()) {
+            protocolSettings.eventManager.registerListener(new Classic_ClientListener());
+
             Classic_DomainPacket cDomainPacket = new Classic_DomainPacket();
             Classic_DomainPacket cMessagePacket = new Classic_DomainPacket();
             Classic_DomainPacket cPingPacket = new Classic_DomainPacket();

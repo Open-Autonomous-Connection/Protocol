@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum ProtocolVersion implements Serializable {
-    PV_1_0_0_CLASSIC("1.0.0", ProtocolType.CLASSIC, ProtocolSide.SERVER),
+    PV_1_0_0_CLASSIC("1.0.0", ProtocolType.CLASSIC, ProtocolSide.BOTH),
     PV_1_0_0_BETA("1.0.0", ProtocolType.BETA, ProtocolSide.BOTH, PV_1_0_0_CLASSIC)
     ;
 

@@ -26,19 +26,31 @@ public class Classic_MessagePacket extends OACPacket {
     }
 
     @Override
-    public void write(PacketHandler packetHandler, ObjectOutputStream objectOutputStream) throws IOException, ClassNotFoundException {
-        objectOutputStream.writeInt(clientID);
+    public void onWrite(PacketHandler packetHandler, ObjectOutputStream objectOutputStream) throws IOException, ClassNotFoundException {
+        if (ProtocolBridge.getInstance().isRunningAsServer()) objectOutputStream.writeInt(clientID);
+        else {
+            clientID = ProtocolBridge.getInstance().getProtocolClient().getNetworkClient().getClientID();
+            objectOutputStream.writeInt(clientID);
+        }
 
         objectOutputStream.writeUTF(message);
         objectOutputStream.writeObject(Classic_ProtocolVersion.PV_1_0_0);
     }
 
     @Override
-    public void read(PacketHandler packetHandler, ObjectInputStream objectInputStream) throws IOException, ClassNotFoundException {
-        int clientID = objectInputStream.readInt();
-        String message = objectInputStream.readUTF();
-        Classic_ProtocolVersion protocolVersion = (Classic_ProtocolVersion) objectInputStream.readObject();
+    public void onRead(PacketHandler packetHandler, ObjectInputStream objectInputStream) throws IOException, ClassNotFoundException {
+        if (ProtocolBridge.getInstance().isRunningAsServer()) {
+            clientID = objectInputStream.readInt();
+            String message = objectInputStream.readUTF();
+            Classic_ProtocolVersion protocolVersion = (Classic_ProtocolVersion) objectInputStream.readObject();
 
-        ProtocolBridge.getInstance().getClassicHandlerServer().handleMessage(ProtocolBridge.getInstance().getProtocolServer().getNetworkServer().getConnectionHandlerByID(clientID), message, protocolVersion);
+            ProtocolBridge.getInstance().getClassicHandlerServer().handleMessage(ProtocolBridge.getInstance().getProtocolServer().getNetworkServer().getConnectionHandlerByID(clientID), message, protocolVersion);
+        } else {
+            clientID = objectInputStream.readInt();
+            String message = objectInputStream.readUTF();
+            Classic_ProtocolVersion protocolVersion = (Classic_ProtocolVersion) objectInputStream.readObject();
+
+            ProtocolBridge.getInstance().getClassicHandlerClient().handleMessage(message);
+        }
     }
 }

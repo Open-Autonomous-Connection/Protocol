@@ -3,6 +3,7 @@ package github.openautonomousconnection.protocol.packets.v1_0_0.beta;
 import github.openautonomousconnection.protocol.ProtocolBridge;
 import github.openautonomousconnection.protocol.packets.OACPacket;
 import github.openautonomousconnection.protocol.versions.ProtocolVersion;
+import github.openautonomousconnection.protocol.versions.v1_0_0.beta.DNSResponseCode;
 import me.finn.unlegitlibrary.network.system.packets.Packet;
 import me.finn.unlegitlibrary.network.system.packets.PacketHandler;
 
@@ -25,14 +26,15 @@ public class UnsupportedClassicPacket extends OACPacket {
     }
 
     @Override
-    public void write(PacketHandler packetHandler, ObjectOutputStream objectOutputStream) throws IOException, ClassNotFoundException {
+    public void onWrite(PacketHandler packetHandler, ObjectOutputStream objectOutputStream) throws IOException, ClassNotFoundException {
         objectOutputStream.writeUTF(unsupportedClassicPacket.getName());
         objectOutputStream.writeInt(content.length);
         for (Object o : content) objectOutputStream.writeObject(o);
+        setResponseCode(DNSResponseCode.RESPONSE_NOT_REQUIRED);
     }
 
     @Override
-    public void read(PacketHandler packetHandler, ObjectInputStream objectInputStream) throws IOException, ClassNotFoundException {
+    public void onRead(PacketHandler packetHandler, ObjectInputStream objectInputStream) throws IOException, ClassNotFoundException {
         String className = objectInputStream.readUTF();
         int size = objectInputStream.readInt();
         content = new Object[size];

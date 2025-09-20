@@ -34,29 +34,46 @@ public class Classic_DomainPacket extends OACPacket {
     }
 
     @Override
-    public void write(PacketHandler packetHandler, ObjectOutputStream objectOutputStream) throws IOException, ClassNotFoundException {
-        objectOutputStream.writeInt(clientID);
-        objectOutputStream.writeObject(requestDomain);
-        objectOutputStream.writeObject(domain);
+    public void onWrite(PacketHandler packetHandler, ObjectOutputStream objectOutputStream) throws IOException, ClassNotFoundException {
+        if (ProtocolBridge.getInstance().isRunningAsServer()) {
+            objectOutputStream.writeInt(clientID);
+            objectOutputStream.writeObject(requestDomain);
+            objectOutputStream.writeObject(domain);
+        } else {
+            clientID = ProtocolBridge.getInstance().getProtocolClient().getNetworkClient().getClientID();
+            objectOutputStream.writeInt(clientID);
+            objectOutputStream.writeObject(requestDomain);
+        }
 
         objectOutputStream.writeObject(Classic_ProtocolVersion.PV_1_0_0);
     }
 
     @Override
-    public void read(PacketHandler packetHandler, ObjectInputStream objectInputStream) throws IOException, ClassNotFoundException {
-        clientID = objectInputStream.readInt();
-        requestDomain = (Classic_RequestDomain) objectInputStream.readObject();
-        Classic_ProtocolVersion protocolVersion = (Classic_ProtocolVersion) objectInputStream.readObject();
+    public void onRead(PacketHandler packetHandler, ObjectInputStream objectInputStream) throws IOException, ClassNotFoundException {
+        if (ProtocolBridge.getInstance().isRunningAsServer()) {
+            clientID = objectInputStream.readInt();
+            requestDomain = (Classic_RequestDomain) objectInputStream.readObject();
+            Classic_ProtocolVersion protocolVersion = (Classic_ProtocolVersion) objectInputStream.readObject();
 
-        try {
-            domain = ProtocolBridge.getInstance().getClassicHandlerServer().getDomain(requestDomain);
-        } catch (SQLException exception) {
-            exception.printStackTrace();
+            try {
+                domain = ProtocolBridge.getInstance().getClassicHandlerServer().getDomain(requestDomain);
+            } catch (SQLException exception) {
+                exception.printStackTrace();
+            }
+
+            ProtocolBridge.getInstance().getProtocolServer().getNetworkServer().getEventManager().executeEvent(new Classic_DomainPacketReceivedEvent(protocolVersion, domain, requestDomain, clientID));
+
+            if (ProtocolBridge.getInstance().getProtocolServer().getClientByID(clientID).clientSupportClassic())
+                ProtocolBridge.getInstance().getProtocolServer().getNetworkServer().getConnectionHandlerByID(clientID).sendPacket(new Classic_DomainPacket(clientID, requestDomain, domain));
+            else
+                ProtocolBridge.getInstance().getProtocolServer().getNetworkServer().getConnectionHandlerByID(clientID).sendPacket(new UnsupportedClassicPacket(Classic_PingPacket.class, new Object[]{clientID, requestDomain, domain}));
+        } else {
+            clientID = objectInputStream.readInt();
+            requestDomain = (Classic_RequestDomain) objectInputStream.readObject();
+            domain = (Classic_Domain) objectInputStream.readObject();
+            Classic_ProtocolVersion protocolVersion = (Classic_ProtocolVersion) objectInputStream.readObject();
+
+            ProtocolBridge.getInstance().getProtocolClient().getNetworkClient().getEventManager().executeEvent(new Classic_DomainPacketReceivedEvent(protocolVersion, domain, requestDomain, clientID));
         }
-
-        ProtocolBridge.getInstance().getProtocolServer().getNetworkServer().getEventManager().executeEvent(new Classic_DomainPacketReceivedEvent(protocolVersion, domain, requestDomain, clientID));
-
-        if (ProtocolBridge.getInstance().getProtocolServer().getClientByID(clientID).clientSupportClassic()) ProtocolBridge.getInstance().getProtocolServer().getNetworkServer().getConnectionHandlerByID(clientID).sendPacket(new Classic_DomainPacket(clientID, requestDomain, domain));
-        else ProtocolBridge.getInstance().getProtocolServer().getNetworkServer().getConnectionHandlerByID(clientID).sendPacket(new UnsupportedClassicPacket(Classic_PingPacket.class, new Object[] {clientID, requestDomain, domain}));
     }
 }

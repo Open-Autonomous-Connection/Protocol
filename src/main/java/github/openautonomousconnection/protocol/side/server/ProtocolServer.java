@@ -1,26 +1,42 @@
 package github.openautonomousconnection.protocol.side.server;
 
 import github.openautonomousconnection.protocol.ProtocolBridge;
+import github.openautonomousconnection.protocol.versions.v1_0_0.beta.Domain;
 import lombok.Getter;
+import me.finn.unlegitlibrary.file.ConfigurationManager;
 import me.finn.unlegitlibrary.network.system.server.NetworkServer;
+import me.finn.unlegitlibrary.utils.DefaultMethodsOverrider;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class ProtocolServer {
+public abstract class ProtocolServer extends DefaultMethodsOverrider {
     @Getter
     private final NetworkServer networkServer;
 
     @Getter
     private List<ConnectedProtocolClient> clients;
 
-    public ConnectedProtocolClient getClientByID(int clientID) {
+    private ConfigurationManager configurationManager;
+
+    public final ConnectedProtocolClient getClientByID(int clientID) {
         for (ConnectedProtocolClient client : clients) if (client.getConnectionHandler().getClientID() == clientID) return client;
         return null;
     }
 
-    public ProtocolServer(File caFolder, File certFile, File keyFile) {
+    public ProtocolServer(File caFolder, File certFile, File keyFile, File configFile) throws IOException {
+        if (!caFolder.exists()) caFolder.mkdirs();
+        if (!certFile.exists() || !keyFile.exists()) throw new FileNotFoundException("Certificate or Key is missing!");
+
+        configurationManager = new ConfigurationManager(configFile);
+        configurationManager.loadProperties();
+
+        if (!configurationManager.isSet("server.site.info")) configurationManager.set("server.site.info", "DNS-SERVER INFO SITE IP");
+        if (!configurationManager.isSet("server.site.register")) configurationManager.set("server.site.register", "SERVER IP TO DNS-FRONTENT WEBSITE");
+
         ProtocolBridge protocolBridge = ProtocolBridge.getInstance();
         this.clients = new ArrayList<>();
 
@@ -31,4 +47,17 @@ public abstract class ProtocolServer {
                 setRequireClientCertificate(false).setRootCAFolder(caFolder).setServerCertificate(certFile, keyFile).
                 build();
     }
+
+    public final String getDNSInfoSite() {
+        return configurationManager.getString("server.site.info");
+    }
+
+    public final String getDNSRegisterSite() {
+        return configurationManager.getString("server.site.register");
+    }
+
+    public abstract List<Domain> getDomains();
+    public abstract String getDomainDestination(Domain domain);
+    public abstract String getSubnameDestination(Domain domain, String subname);
+    public abstract String getTLNInfoSite(String topLevelName);
 }

@@ -1,9 +1,7 @@
 package github.openautonomousconnection.protocol.versions.v1_0_0.classic;
 
 import github.openautonomousconnection.protocol.versions.v1_0_0.beta.Domain;
-import github.openautonomousconnection.protocol.versions.v1_0_0.beta.DomainTest;
 import lombok.Getter;
-import me.finn.unlegitlibrary.string.StringUtils;
 
 import java.io.Serializable;
 
