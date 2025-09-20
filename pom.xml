@@ -9,10 +9,10 @@
     <version>1.0.3-SNAPSHOT</version>
     <organization>
         <name>Open Autonomous Connection</name>
-        <url>https://github.com/Open-Autonomous-Connection</url>
+        <url>https://open-autonomous-connection.org/</url>
     </organization>
-    <url>https://github.com/Open-Autonomous-Connection/Protocol</url>
-    <description>The Protocol for Server and Client </description>
+    <url>https://open-autonomous-connection.org/protocol/</url>
+    <description>The Protocol for Server and Client</description>
 
     <properties>
         <maven.compiler.source>23</maven.compiler.source>
@@ -33,8 +33,18 @@
         <developer>
             <name>UnlegitDqrk</name>
             <organization>Open Autonomous Connection</organization>
-            <organizationUrl>https://github.com/Open-Autonomous-Connection</organizationUrl>
-            <url>https://github.com/UnlegitDqrk</url>
+            <organizationUrl>https://open-autonomous-connection.org/</organizationUrl>
+            <url>https://unlegitdqrk.dev/</url>
+            <roles>
+                <role>Owner</role>
+                <role>Head Developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>Maple</name>
+            <organization>Open Autonomous Connection</organization>
+            <organizationUrl>https://open-autonomous-connection.org/</organizationUrl>
+            <url>https://niumaple.carrd.co/</url>
             <roles>
                 <role>Owner</role>
                 <role>Head Developer</role>
