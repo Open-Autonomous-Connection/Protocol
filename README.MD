@@ -25,8 +25,7 @@ This project (OAC) is licensed under the [Open Autonomous Public License (OAPL)]
 <dependency>
     <groupId>me.openautonomousconnection</groupId>
     <artifactId>protocol</artifactId>
-    <version>1.0.0</version>
-    <scope>compile</scope>
+    <version>VERSION</version>
 </dependency>
 ```
 
