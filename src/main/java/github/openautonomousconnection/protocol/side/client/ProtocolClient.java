@@ -15,10 +15,21 @@ import java.io.File;
 import java.io.IOException;
 
 public abstract class ProtocolClient extends DefaultMethodsOverrider {
-    private ProtocolVersion serverVersion = null;
-
     @Getter
     private final NetworkClient networkClient;
+    private ProtocolVersion serverVersion = null;
+
+    public ProtocolClient(File caFolder, File certificatesClientFolder, File certificatesKeyFolder) {
+        if (!caFolder.exists()) caFolder.mkdirs();
+        if (!certificatesClientFolder.exists()) certificatesClientFolder.mkdirs();
+        if (!certificatesKeyFolder.exists()) certificatesKeyFolder.mkdirs();
+
+        networkClient = new NetworkClient.ClientBuilder().setLogger(ProtocolBridge.getInstance().getLogger()).
+                setHost(ProtocolBridge.getInstance().getProtocolSettings().host).setPort(ProtocolBridge.getInstance().getProtocolSettings().port).
+                setPacketHandler(ProtocolBridge.getInstance().getProtocolSettings().packetHandler).setEventManager(ProtocolBridge.getInstance().getProtocolSettings().eventManager).
+                setRootCAFolder(caFolder).setClientCertificatesFolder(certificatesClientFolder, certificatesKeyFolder).
+                build();
+    }
 
     public final ProtocolVersion getServerVersion() {
         return serverVersion == null ? ProtocolVersion.PV_1_0_0_CLASSIC : serverVersion;
@@ -86,18 +97,7 @@ public abstract class ProtocolClient extends DefaultMethodsOverrider {
         networkClient.sendPacket(new ValidateDomainPacket(domain));
     }
 
-    public ProtocolClient(File caFolder, File certificatesClientFolder, File certificatesKeyFolder) {
-        if (!caFolder.exists()) caFolder.mkdirs();
-        if (!certificatesClientFolder.exists()) certificatesClientFolder.mkdirs();
-        if (!certificatesKeyFolder.exists()) certificatesKeyFolder.mkdirs();
-
-        networkClient = new NetworkClient.ClientBuilder().setLogger(ProtocolBridge.getInstance().getLogger()).
-                setHost(ProtocolBridge.getInstance().getProtocolSettings().host).setPort(ProtocolBridge.getInstance().getProtocolSettings().port).
-                setPacketHandler(ProtocolBridge.getInstance().getProtocolSettings().packetHandler).setEventManager(ProtocolBridge.getInstance().getProtocolSettings().eventManager).
-                setRootCAFolder(caFolder).setClientCertificatesFolder(certificatesClientFolder, certificatesKeyFolder).
-                build();
-    }
-
     public abstract void validationCompleted(Domain domain, DNSResponseCode responseCode);
+
     public abstract void getDestinationCompleted(Domain domain, String destination, DNSResponseCode validationResponse);
 }

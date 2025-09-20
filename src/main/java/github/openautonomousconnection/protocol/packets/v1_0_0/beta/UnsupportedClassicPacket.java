@@ -4,7 +4,6 @@ import github.openautonomousconnection.protocol.ProtocolBridge;
 import github.openautonomousconnection.protocol.packets.OACPacket;
 import github.openautonomousconnection.protocol.versions.ProtocolVersion;
 import github.openautonomousconnection.protocol.versions.v1_0_0.beta.DNSResponseCode;
-import me.finn.unlegitlibrary.network.system.packets.Packet;
 import me.finn.unlegitlibrary.network.system.packets.PacketHandler;
 
 import java.io.IOException;
@@ -27,7 +26,8 @@ public class UnsupportedClassicPacket extends OACPacket {
 
     @Override
     public void onWrite(PacketHandler packetHandler, ObjectOutputStream objectOutputStream) throws IOException, ClassNotFoundException {
-        if (ProtocolBridge.getInstance().isRunningAsClient()) objectOutputStream.writeInt(ProtocolBridge.getInstance().getProtocolClient().getNetworkClient().getClientID());
+        if (ProtocolBridge.getInstance().isRunningAsClient())
+            objectOutputStream.writeInt(ProtocolBridge.getInstance().getProtocolClient().getNetworkClient().getClientID());
         objectOutputStream.writeUTF(unsupportedClassicPacket.getName());
         objectOutputStream.writeInt(content.length);
         for (Object o : content) objectOutputStream.writeObject(o);
@@ -46,7 +46,8 @@ public class UnsupportedClassicPacket extends OACPacket {
             content[i] = objectInputStream.readObject();
         }
 
-        if (ProtocolBridge.getInstance().isRunningAsServer()) ProtocolBridge.getInstance().getClassicHandlerServer().unsupportedClassicPacket(className, content, ProtocolBridge.getInstance().getProtocolServer().getClientByID(clientID));
+        if (ProtocolBridge.getInstance().isRunningAsServer())
+            ProtocolBridge.getInstance().getClassicHandlerServer().unsupportedClassicPacket(className, content, ProtocolBridge.getInstance().getProtocolServer().getClientByID(clientID));
         else ProtocolBridge.getInstance().getClassicHandlerClient().unsupportedClassicPacket(className, content);
     }
 }

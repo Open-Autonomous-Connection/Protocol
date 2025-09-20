@@ -45,6 +45,7 @@ public class Classic_WebsitesContent extends DefaultMethodsOverrider {
             </body>
             </html>
             """;
+    public static String ERROR_OCCURRED = ERROR_OCCURRED("No specified details!");
 
     public static String ERROR_OCCURRED(String errorDetails) {
         return """
@@ -63,6 +64,4 @@ public class Classic_WebsitesContent extends DefaultMethodsOverrider {
                 </html>
                 """;
     }
-
-    public static String ERROR_OCCURRED = ERROR_OCCURRED("No specified details!");
 }

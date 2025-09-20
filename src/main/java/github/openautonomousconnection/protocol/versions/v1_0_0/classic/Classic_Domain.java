@@ -8,9 +8,10 @@ import java.io.Serializable;
 public class Classic_Domain implements Serializable {
     public final String name;
     public final String topLevelDomain;
-    private final String destination;
     public final String path;
-    @Getter private final Domain domain;
+    private final String destination;
+    @Getter
+    private final Domain domain;
 
     public Classic_Domain(String name, String topLevelDomain, String destination, String path) {
         this.domain = new Domain(name + "." + topLevelDomain + "/" + (path.startsWith("/") ? path : "/" + path));

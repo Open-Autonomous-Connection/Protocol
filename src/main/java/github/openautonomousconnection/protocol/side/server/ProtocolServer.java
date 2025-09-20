@@ -5,7 +5,6 @@ import github.openautonomousconnection.protocol.versions.v1_0_0.beta.DNSResponse
 import github.openautonomousconnection.protocol.versions.v1_0_0.beta.Domain;
 import lombok.Getter;
 import me.finn.unlegitlibrary.file.ConfigurationManager;
-import me.finn.unlegitlibrary.network.system.server.ConnectionHandler;
 import me.finn.unlegitlibrary.network.system.server.NetworkServer;
 import me.finn.unlegitlibrary.utils.DefaultMethodsOverrider;
 
@@ -22,12 +21,7 @@ public abstract class ProtocolServer extends DefaultMethodsOverrider {
     @Getter
     private List<ConnectedProtocolClient> clients;
 
-    private ConfigurationManager configurationManager;
-
-    public final ConnectedProtocolClient getClientByID(int clientID) {
-        for (ConnectedProtocolClient client : clients) if (client.getConnectionHandler().getClientID() == clientID) return client;
-        return null;
-    }
+    private final ConfigurationManager configurationManager;
 
     public ProtocolServer(File caFolder, File certFile, File keyFile, File configFile) throws IOException {
         if (!caFolder.exists()) caFolder.mkdirs();
@@ -36,8 +30,10 @@ public abstract class ProtocolServer extends DefaultMethodsOverrider {
         configurationManager = new ConfigurationManager(configFile);
         configurationManager.loadProperties();
 
-        if (!configurationManager.isSet("server.site.info")) configurationManager.set("server.site.info", "DNS-SERVER INFO SITE IP");
-        if (!configurationManager.isSet("server.site.register")) configurationManager.set("server.site.register", "SERVER IP TO DNS-FRONTENT WEBSITE");
+        if (!configurationManager.isSet("server.site.info"))
+            configurationManager.set("server.site.info", "DNS-SERVER INFO SITE IP");
+        if (!configurationManager.isSet("server.site.register"))
+            configurationManager.set("server.site.register", "SERVER IP TO DNS-FRONTENT WEBSITE");
 
         ProtocolBridge protocolBridge = ProtocolBridge.getInstance();
         this.clients = new ArrayList<>();
@@ -50,6 +46,12 @@ public abstract class ProtocolServer extends DefaultMethodsOverrider {
                 build();
     }
 
+    public final ConnectedProtocolClient getClientByID(int clientID) {
+        for (ConnectedProtocolClient client : clients)
+            if (client.getConnectionHandler().getClientID() == clientID) return client;
+        return null;
+    }
+
     public final String getDNSInfoSite() {
         return configurationManager.getString("server.site.info");
     }
@@ -59,10 +61,16 @@ public abstract class ProtocolServer extends DefaultMethodsOverrider {
     }
 
     public abstract List<Domain> getDomains();
+
     public abstract String getDomainDestination(Domain domain);
+
     public abstract String getSubnameDestination(Domain domain, String subname);
+
     public abstract String getTLNInfoSite(String topLevelName);
+
     public abstract DNSResponseCode validateDomain(Domain requestedDomain);
+
     public abstract void validationFailed(Domain domain, ConnectedProtocolClient client, Exception exception);
+
     public abstract void getDomainDestinationFailed(ConnectedProtocolClient client, Domain domain, DNSResponseCode validationResponse, Exception exception);
 }

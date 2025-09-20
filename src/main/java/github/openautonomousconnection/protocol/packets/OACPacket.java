@@ -17,17 +17,17 @@ public abstract class OACPacket extends Packet {
 
     private DNSResponseCode responseCode = DNSResponseCode.RESPONSE_NOT_REQUIRED;
 
-    protected final void setResponseCode(DNSResponseCode responseCode) {
-        this.responseCode = responseCode;
+    public OACPacket(int id, ProtocolVersion protocolVersion) {
+        super(id);
+        this.protocolVersion = protocolVersion;
     }
 
     protected final DNSResponseCode getResponseCode() {
         return responseCode;
     }
 
-    public OACPacket(int id, ProtocolVersion protocolVersion) {
-        super(id);
-        this.protocolVersion = protocolVersion;
+    protected final void setResponseCode(DNSResponseCode responseCode) {
+        this.responseCode = responseCode;
     }
 
     @Override
@@ -46,6 +46,9 @@ public abstract class OACPacket extends Packet {
     }
 
     public abstract void onWrite(PacketHandler packetHandler, ObjectOutputStream objectOutputStream) throws IOException, ClassNotFoundException;
+
     public abstract void onRead(PacketHandler packetHandler, ObjectInputStream objectInputStream) throws IOException, ClassNotFoundException;
-    protected void onResponseCodeRead(PacketHandler packetHandler, ObjectInputStream objectInputStream) {}
+
+    protected void onResponseCodeRead(PacketHandler packetHandler, ObjectInputStream objectInputStream) {
+    }
 }

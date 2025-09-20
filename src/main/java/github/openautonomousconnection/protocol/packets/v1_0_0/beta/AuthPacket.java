@@ -22,7 +22,8 @@ public class AuthPacket extends OACPacket {
 
     @Override
     public void onWrite(PacketHandler packetHandler, ObjectOutputStream objectOutputStream) throws IOException, ClassNotFoundException {
-        if (ProtocolBridge.getInstance().isRunningAsServer()) objectOutputStream.writeObject(ProtocolBridge.getInstance().getProtocolVersion());
+        if (ProtocolBridge.getInstance().isRunningAsServer())
+            objectOutputStream.writeObject(ProtocolBridge.getInstance().getProtocolVersion());
         else {
             objectOutputStream.writeInt(ProtocolBridge.getInstance().getProtocolClient().getNetworkClient().getClientID());
             objectOutputStream.writeObject(ProtocolBridge.getInstance().getProtocolVersion());

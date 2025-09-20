@@ -10,7 +10,6 @@ import me.finn.unlegitlibrary.network.system.packets.PacketHandler;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.function.DoubleBinaryOperator;
 
 public class GetDestinationPacket extends OACPacket {
     private Domain domain;

@@ -13,11 +13,16 @@ class Classic_DomainUtils extends DefaultMethodsOverrider {
         URL uri = null;
         String tldString = null;
 
-        if (url.startsWith(Classic_SiteType.PUBLIC.name + "://")) url = url.substring((Classic_SiteType.PUBLIC.name + "://").length());
-        if (url.startsWith(Classic_SiteType.CLIENT.name + "://")) url = url.substring((Classic_SiteType.CLIENT.name + "://").length());
-        if (url.startsWith(Classic_SiteType.SERVER.name + "://")) url = url.substring((Classic_SiteType.SERVER.name + "://").length());
-        if (url.startsWith(Classic_SiteType.PROTOCOL.name + "://")) url = url.substring((Classic_SiteType.PROTOCOL.name + "://").length());
-        if (url.startsWith(Classic_SiteType.LOCAL.name + "://")) url = url.substring((Classic_SiteType.LOCAL.name + "://").length());
+        if (url.startsWith(Classic_SiteType.PUBLIC.name + "://"))
+            url = url.substring((Classic_SiteType.PUBLIC.name + "://").length());
+        if (url.startsWith(Classic_SiteType.CLIENT.name + "://"))
+            url = url.substring((Classic_SiteType.CLIENT.name + "://").length());
+        if (url.startsWith(Classic_SiteType.SERVER.name + "://"))
+            url = url.substring((Classic_SiteType.SERVER.name + "://").length());
+        if (url.startsWith(Classic_SiteType.PROTOCOL.name + "://"))
+            url = url.substring((Classic_SiteType.PROTOCOL.name + "://").length());
+        if (url.startsWith(Classic_SiteType.LOCAL.name + "://"))
+            url = url.substring((Classic_SiteType.LOCAL.name + "://").length());
 
         if (!url.startsWith("https://") && !url.startsWith("http://")) url = "https://" + url;
 
@@ -29,11 +34,16 @@ class Classic_DomainUtils extends DefaultMethodsOverrider {
     }
 
     public static String getDomainName(String url) throws URISyntaxException, MalformedURLException {
-        if (url.startsWith(Classic_SiteType.PUBLIC.name + "://")) url = url.substring((Classic_SiteType.PUBLIC.name + "://").length());
-        if (url.startsWith(Classic_SiteType.CLIENT.name + "://")) url = url.substring((Classic_SiteType.CLIENT.name + "://").length());
-        if (url.startsWith(Classic_SiteType.SERVER.name + "://")) url = url.substring((Classic_SiteType.SERVER.name + "://").length());
-        if (url.startsWith(Classic_SiteType.PROTOCOL.name + "://")) url = url.substring((Classic_SiteType.PROTOCOL.name + "://").length());
-        if (url.startsWith(Classic_SiteType.LOCAL.name + "://")) url = url.substring((Classic_SiteType.LOCAL.name + "://").length());
+        if (url.startsWith(Classic_SiteType.PUBLIC.name + "://"))
+            url = url.substring((Classic_SiteType.PUBLIC.name + "://").length());
+        if (url.startsWith(Classic_SiteType.CLIENT.name + "://"))
+            url = url.substring((Classic_SiteType.CLIENT.name + "://").length());
+        if (url.startsWith(Classic_SiteType.SERVER.name + "://"))
+            url = url.substring((Classic_SiteType.SERVER.name + "://").length());
+        if (url.startsWith(Classic_SiteType.PROTOCOL.name + "://"))
+            url = url.substring((Classic_SiteType.PROTOCOL.name + "://").length());
+        if (url.startsWith(Classic_SiteType.LOCAL.name + "://"))
+            url = url.substring((Classic_SiteType.LOCAL.name + "://").length());
 
         if (!url.startsWith("https://") && !url.startsWith("http://")) url = "https://" + url;
 

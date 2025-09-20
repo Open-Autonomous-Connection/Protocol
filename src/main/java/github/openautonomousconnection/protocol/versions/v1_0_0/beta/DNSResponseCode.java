@@ -27,8 +27,7 @@ public enum DNSResponseCode implements Serializable {
     RESPONSE_DOMAIN_SUBNAME_DELETED(126, "Subname deleted"),
 
     RESPONSE_DOMAIN_FULLY_EXIST(130, "Full domain exist"),
-    RESPONSE_DOMAIN_FULLY_NOT_EXIST(131, "Full domain does not exist")
-    ;
+    RESPONSE_DOMAIN_FULLY_NOT_EXIST(131, "Full domain does not exist");
 
     @Getter
     private final int code;
@@ -43,6 +42,6 @@ public enum DNSResponseCode implements Serializable {
 
     @Override
     public String toString() {
-        return "{code=" + code + ";description=" + description +"}";
+        return "{code=" + code + ";description=" + description + "}";
     }
 }

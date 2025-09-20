@@ -1,9 +1,9 @@
 package github.openautonomousconnection.protocol.packets.v1_0_0.classic;
 
 import github.openautonomousconnection.protocol.ProtocolBridge;
+import github.openautonomousconnection.protocol.packets.OACPacket;
 import github.openautonomousconnection.protocol.versions.ProtocolVersion;
 import github.openautonomousconnection.protocol.versions.v1_0_0.classic.Classic_ProtocolVersion;
-import github.openautonomousconnection.protocol.packets.OACPacket;
 import me.finn.unlegitlibrary.network.system.packets.PacketHandler;
 
 import java.io.IOException;

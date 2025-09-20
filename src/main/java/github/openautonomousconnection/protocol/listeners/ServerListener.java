@@ -7,8 +7,6 @@ import me.finn.unlegitlibrary.event.Listener;
 import me.finn.unlegitlibrary.network.system.server.events.ConnectionHandlerConnectedEvent;
 import me.finn.unlegitlibrary.network.system.server.events.ConnectionHandlerDisconnectedEvent;
 
-import java.util.ArrayList;
-
 public class ServerListener extends EventListener {
 
     @Listener

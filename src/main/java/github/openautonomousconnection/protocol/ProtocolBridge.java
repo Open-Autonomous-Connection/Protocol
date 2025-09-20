@@ -7,14 +7,12 @@ import github.openautonomousconnection.protocol.packets.v1_0_0.beta.AuthPacket;
 import github.openautonomousconnection.protocol.packets.v1_0_0.beta.GetDestinationPacket;
 import github.openautonomousconnection.protocol.packets.v1_0_0.beta.UnsupportedClassicPacket;
 import github.openautonomousconnection.protocol.packets.v1_0_0.beta.ValidateDomainPacket;
-import github.openautonomousconnection.protocol.versions.ProtocolVersion;
-import github.openautonomousconnection.protocol.versions.v1_0_0.beta.DNSResponseCode;
-import github.openautonomousconnection.protocol.versions.v1_0_0.beta.Domain;
-import github.openautonomousconnection.protocol.versions.v1_0_0.classic.ClassicHandlerClient;
-import github.openautonomousconnection.protocol.versions.v1_0_0.classic.ClassicHandlerServer;
 import github.openautonomousconnection.protocol.packets.v1_0_0.classic.Classic_DomainPacket;
 import github.openautonomousconnection.protocol.side.client.ProtocolClient;
 import github.openautonomousconnection.protocol.side.server.ProtocolServer;
+import github.openautonomousconnection.protocol.versions.ProtocolVersion;
+import github.openautonomousconnection.protocol.versions.v1_0_0.classic.ClassicHandlerClient;
+import github.openautonomousconnection.protocol.versions.v1_0_0.classic.ClassicHandlerServer;
 import github.openautonomousconnection.protocol.versions.v1_0_0.classic.Classic_ClientListener;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,27 +25,23 @@ import java.lang.reflect.InvocationTargetException;
 public class ProtocolBridge {
 
     @Getter
+    private static ProtocolBridge instance;
+    @Getter
     private final ProtocolSettings protocolSettings;
-
     @Getter
     private final ProtocolVersion protocolVersion;
-
-    @Getter
-    private ProtocolServer protocolServer;
-
-    @Getter
-    private ProtocolClient protocolClient;
-
     @Getter
     private final Logger logger;
-
-    @Getter @Setter
-    private ClassicHandlerServer classicHandlerServer;
-    @Getter @Setter
-    private ClassicHandlerClient classicHandlerClient;
-
     @Getter
-    private static ProtocolBridge instance;
+    private ProtocolServer protocolServer;
+    @Getter
+    private ProtocolClient protocolClient;
+    @Getter
+    @Setter
+    private ClassicHandlerServer classicHandlerServer;
+    @Getter
+    @Setter
+    private ClassicHandlerClient classicHandlerClient;
 
     public ProtocolBridge(ProtocolServer protocolServer, ProtocolSettings protocolSettings, ProtocolVersion protocolVersion, File logFolder) throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         this.protocolServer = protocolServer;
@@ -124,9 +118,12 @@ public class ProtocolBridge {
         GetDestinationPacket v100bGetDestinationPacket = new GetDestinationPacket();
 
         if (isPacketSupported(v100bAuthPath)) protocolSettings.packetHandler.registerPacket(v100bAuthPath);
-        if (isPacketSupported(v100bUnsupportedClassicPacket)) protocolSettings.packetHandler.registerPacket(v100bUnsupportedClassicPacket);
-        if (isPacketSupported(v100bValidateDomainPacket)) protocolSettings.packetHandler.registerPacket(v100bValidateDomainPacket);
-        if (isPacketSupported(v100bGetDestinationPacket)) protocolSettings.packetHandler.registerPacket(v100bGetDestinationPacket);
+        if (isPacketSupported(v100bUnsupportedClassicPacket))
+            protocolSettings.packetHandler.registerPacket(v100bUnsupportedClassicPacket);
+        if (isPacketSupported(v100bValidateDomainPacket))
+            protocolSettings.packetHandler.registerPacket(v100bValidateDomainPacket);
+        if (isPacketSupported(v100bGetDestinationPacket))
+            protocolSettings.packetHandler.registerPacket(v100bGetDestinationPacket);
     }
 
     public boolean isPacketSupported(OACPacket packet) {

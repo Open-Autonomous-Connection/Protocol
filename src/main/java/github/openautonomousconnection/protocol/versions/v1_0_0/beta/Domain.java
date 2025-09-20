@@ -8,15 +8,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Domain implements Serializable {
-    public static class DefaultDomains {
-        public static final Domain DNS_INFO_SITE = new Domain("oac://about.oac/");
-        public static final Domain DNS_REGISTER_SITE = new Domain("oac://register.oac/");
-
-        public static Domain TLN_INFO_SITE(String topLevelName) {
-            return new Domain("oac://about." + topLevelName + "/");
-        }
-    }
-
     @Getter
     private final String subname;
     @Getter
@@ -31,12 +22,12 @@ public class Domain implements Serializable {
     private String fragment;
     @Getter
     private String protocol;
-
     public Domain(String fullDomain) {
         // Remove protocol
         String domainWithPath = fullDomain.contains("://") ? fullDomain.split("://", 2)[1] : fullDomain;
         this.protocol = fullDomain.contains("://") ? fullDomain.split("://", 2)[0] : "";
-        if (this.protocol.endsWith("://")) this.protocol = this.protocol.substring(0, this.protocol.length() - "://".length());
+        if (this.protocol.endsWith("://"))
+            this.protocol = this.protocol.substring(0, this.protocol.length() - "://".length());
 
         // Cut path
         String[] domainPartsAndPath = domainWithPath.split("/", 2);
@@ -85,15 +76,27 @@ public class Domain implements Serializable {
                 domain.getTopLevelName().equalsIgnoreCase(this.topLevelName) && domain.getProtocol().equalsIgnoreCase(this.protocol);
     }
 
-
     public final String getDestination() {
-        if (ProtocolBridge.getInstance().isRunningAsClient()) return DNSResponseCode.RESPONSE_INVALID_REQUEST.toString();
+        if (ProtocolBridge.getInstance().isRunningAsClient())
+            return DNSResponseCode.RESPONSE_INVALID_REQUEST.toString();
 
-        if (this.equals(DefaultDomains.DNS_INFO_SITE)) return ProtocolBridge.getInstance().getProtocolServer().getDNSInfoSite();
-        if (this.equals(DefaultDomains.DNS_REGISTER_SITE)) return ProtocolBridge.getInstance().getProtocolServer().getDNSRegisterSite();
-        if (this.name.equalsIgnoreCase("about") && this.protocol.equalsIgnoreCase("oac")) return ProtocolBridge.getInstance().getProtocolServer().getTLNInfoSite(topLevelName);
+        if (this.equals(DefaultDomains.DNS_INFO_SITE))
+            return ProtocolBridge.getInstance().getProtocolServer().getDNSInfoSite();
+        if (this.equals(DefaultDomains.DNS_REGISTER_SITE))
+            return ProtocolBridge.getInstance().getProtocolServer().getDNSRegisterSite();
+        if (this.name.equalsIgnoreCase("about") && this.protocol.equalsIgnoreCase("oac"))
+            return ProtocolBridge.getInstance().getProtocolServer().getTLNInfoSite(topLevelName);
 
         return !hasSubname() ? ProtocolBridge.getInstance().getProtocolServer().getDomainDestination(this) : ProtocolBridge.getInstance().getProtocolServer().getSubnameDestination(this, subname);
+    }
+
+    public static class DefaultDomains {
+        public static final Domain DNS_INFO_SITE = new Domain("oac://about.oac/");
+        public static final Domain DNS_REGISTER_SITE = new Domain("oac://register.oac/");
+
+        public static Domain TLN_INFO_SITE(String topLevelName) {
+            return new Domain("oac://about." + topLevelName + "/");
+        }
     }
 
 }

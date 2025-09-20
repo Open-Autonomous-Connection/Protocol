@@ -25,7 +25,8 @@ public class ValidateDomainPacket extends OACPacket {
 
     @Override
     public void onWrite(PacketHandler packetHandler, ObjectOutputStream objectOutputStream) throws IOException, ClassNotFoundException {
-        if (ProtocolBridge.getInstance().isRunningAsClient()) objectOutputStream.writeInt(ProtocolBridge.getInstance().getProtocolClient().getNetworkClient().getClientID());
+        if (ProtocolBridge.getInstance().isRunningAsClient())
+            objectOutputStream.writeInt(ProtocolBridge.getInstance().getProtocolClient().getNetworkClient().getClientID());
         else setResponseCode(ProtocolBridge.getInstance().getProtocolServer().validateDomain(domain));
 
         objectOutputStream.writeObject(domain);

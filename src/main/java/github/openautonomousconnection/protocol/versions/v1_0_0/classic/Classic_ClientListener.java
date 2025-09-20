@@ -21,13 +21,14 @@ public class Classic_ClientListener extends EventListener {
             try {
                 if (!ProtocolBridge.getInstance().getProtocolClient().getNetworkClient().sendPacket(new Classic_PingPacket(event.requestDomain, event.domain, false))) {
                     ProtocolBridge.getInstance().getClassicHandlerClient().handleHTMLContent(Classic_SiteType.PROTOCOL, new Classic_LocalDomain("error-occurred", "html", ""),
-                            Classic_WebsitesContent.ERROR_OCCURRED(event.domain.toString() + "/" + event.domain.path));
+                            Classic_WebsitesContent.ERROR_OCCURRED(event.domain + "/" + event.domain.path));
                 }
             } catch (IOException | ClassNotFoundException e) {
                 ProtocolBridge.getInstance().getClassicHandlerClient().handleHTMLContent(Classic_SiteType.PROTOCOL, new Classic_LocalDomain("error-occurred", "html", ""),
-                        Classic_WebsitesContent.ERROR_OCCURRED(event.domain.toString() + "/" + event.domain.path + ":\n" + e.getMessage()));
+                        Classic_WebsitesContent.ERROR_OCCURRED(event.domain + "/" + event.domain.path + ":\n" + e.getMessage()));
             }
-        } else ProtocolBridge.getInstance().getClassicHandlerClient().handleHTMLContent(Classic_SiteType.PROTOCOL, new Classic_LocalDomain("domain-not-found", "html", ""), Classic_WebsitesContent.DOMAIN_NOT_FOUND);
+        } else
+            ProtocolBridge.getInstance().getClassicHandlerClient().handleHTMLContent(Classic_SiteType.PROTOCOL, new Classic_LocalDomain("domain-not-found", "html", ""), Classic_WebsitesContent.DOMAIN_NOT_FOUND);
     }
 
     @Listener
@@ -49,9 +50,10 @@ public class Classic_ClientListener extends EventListener {
                 ProtocolBridge.getInstance().getClassicHandlerClient().handleHTMLContent(Classic_SiteType.PUBLIC, event.domain, content.toString());
             } catch (IOException exception) {
                 ProtocolBridge.getInstance().getClassicHandlerClient().handleHTMLContent(Classic_SiteType.PROTOCOL, new Classic_LocalDomain("error-occurred", "html", ""),
-                        Classic_WebsitesContent.ERROR_OCCURRED(exception.getMessage().replace(event.domain.getDomain().getDestination(), event.domain.toString() + "/" + event.domain.path)));
+                        Classic_WebsitesContent.ERROR_OCCURRED(exception.getMessage().replace(event.domain.getDomain().getDestination(), event.domain + "/" + event.domain.path)));
             }
-        } else ProtocolBridge.getInstance().getClassicHandlerClient().handleHTMLContent(Classic_SiteType.PROTOCOL, new Classic_LocalDomain("error-not-reached", "html", ""), Classic_WebsitesContent.DOMAIN_NOT_REACHABLE);
+        } else
+            ProtocolBridge.getInstance().getClassicHandlerClient().handleHTMLContent(Classic_SiteType.PROTOCOL, new Classic_LocalDomain("error-not-reached", "html", ""), Classic_WebsitesContent.DOMAIN_NOT_REACHABLE);
     }
 
     @Override

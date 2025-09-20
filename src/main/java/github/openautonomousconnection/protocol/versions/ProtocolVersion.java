@@ -9,8 +9,7 @@ import java.util.List;
 
 public enum ProtocolVersion implements Serializable {
     PV_1_0_0_CLASSIC("1.0.0", ProtocolType.CLASSIC, ProtocolSide.BOTH),
-    PV_1_0_0_BETA("1.0.0", ProtocolType.BETA, ProtocolSide.BOTH, PV_1_0_0_CLASSIC)
-    ;
+    PV_1_0_0_BETA("1.0.0", ProtocolType.BETA, ProtocolSide.BOTH, PV_1_0_0_CLASSIC);
 
     @Getter
     private final String version;
@@ -35,7 +34,7 @@ public enum ProtocolVersion implements Serializable {
         for (ProtocolVersion compatibleVersion : compatibleVersions) compatible.append(compatibleVersion.buildName());
         compatible.append("]");
 
-        return "{version=" + version + ";type=" + protocolType.toString() + ";side=" + protocolSide.toString() + ";compatible=" + compatible.toString() + "}";
+        return "{version=" + version + ";type=" + protocolType.toString() + ";side=" + protocolSide.toString() + ";compatible=" + compatible + "}";
     }
 
     public final String buildName() {
@@ -45,9 +44,7 @@ public enum ProtocolVersion implements Serializable {
     public enum ProtocolType implements Serializable {
         CLASSIC, // -> See "_old" Projects on GitHub Organisation https://github.com/Open-Autonomous-Connection/
         BETA,
-        STABLE
-
-        ;
+        STABLE;
 
         @Override
         public final String toString() {

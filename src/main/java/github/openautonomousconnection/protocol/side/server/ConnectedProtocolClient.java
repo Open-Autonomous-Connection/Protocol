@@ -12,16 +12,16 @@ public class ConnectedProtocolClient {
 
     private ProtocolVersion clientVersion = null;
 
+    public ConnectedProtocolClient(ConnectionHandler connectionHandler) {
+        this.connectionHandler = connectionHandler;
+    }
+
     public ProtocolVersion getClientVersion() {
         return clientVersion == null ? ProtocolVersion.PV_1_0_0_CLASSIC : clientVersion;
     }
 
     public void setClientVersion(ProtocolVersion clientVersion) {
         if (clientVersion == null) this.clientVersion = clientVersion;
-    }
-
-    public ConnectedProtocolClient(ConnectionHandler connectionHandler) {
-        this.connectionHandler = connectionHandler;
     }
 
     public boolean isStableClient() {
