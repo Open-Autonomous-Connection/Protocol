@@ -11,7 +11,7 @@ This project (OAC) is licensed under the [Open Autonomous Public License (OAPL)]
 
 **Third-party components:**
 - *UnlegitLibrary* is authored by the same copyright holder and is used here under a special agreement:  
-  While UnlegitLibrary is generally distributed under the [GNU GPLv3](https://www.gnu.org/licenses/gpl-3.0.html),  
+  While UnlegitLibrary is generally distributed under the [GNU GPLv3](https://github.com/UnlegitDqrk/UnlegitLibrary/blob/master/LICENSE),  
   it is additionally licensed under OAPL **exclusively for the OAC project**.  
   Therefore, within OAC, the OAPL terms apply to UnlegitLibrary as well.
 
