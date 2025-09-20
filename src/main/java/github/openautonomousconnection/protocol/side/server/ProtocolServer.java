@@ -27,13 +27,20 @@ public abstract class ProtocolServer extends DefaultMethodsOverrider {
         if (!caFolder.exists()) caFolder.mkdirs();
         if (!certFile.exists() || !keyFile.exists()) throw new FileNotFoundException("Certificate or Key is missing!");
 
+        if (!configFile.exists()) configFile.createNewFile();
+
         configurationManager = new ConfigurationManager(configFile);
         configurationManager.loadProperties();
 
-        if (!configurationManager.isSet("server.site.info"))
+        if (!configurationManager.isSet("server.site.info")) {
             configurationManager.set("server.site.info", "DNS-SERVER INFO SITE IP");
-        if (!configurationManager.isSet("server.site.register"))
+            configurationManager.saveProperties();
+        }
+
+        if (!configurationManager.isSet("server.site.register")) {
             configurationManager.set("server.site.register", "SERVER IP TO DNS-FRONTENT WEBSITE");
+            configurationManager.saveProperties();
+        }
 
         ProtocolBridge protocolBridge = ProtocolBridge.getInstance();
         this.clients = new ArrayList<>();
