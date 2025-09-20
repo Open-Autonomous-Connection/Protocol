@@ -23,7 +23,7 @@ This project (OAC) is licensed under the [Open Autonomous Public License (OAPL)]
 ### pom.xml
 ```
 <dependency>
-    <groupId>me.openautonomousconnection</groupId>
+    <groupId>github.openautonomousconnection</groupId>
     <artifactId>protocol</artifactId>
     <version>VERSION</version>
 </dependency>
