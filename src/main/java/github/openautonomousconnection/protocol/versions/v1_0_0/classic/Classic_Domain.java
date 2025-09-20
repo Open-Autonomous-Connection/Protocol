@@ -15,7 +15,7 @@ public class Classic_Domain implements Serializable {
     @Getter private final Domain domain;
 
     public Classic_Domain(String name, String topLevelDomain, String destination, String path) {
-        this.domain = new Domain(name + "." + topLevelDomain + "/" + (path.startsWith("/") ? path : "/" + path);
+        this.domain = new Domain(name + "." + topLevelDomain + "/" + (path.startsWith("/") ? path : "/" + path));
         this.name = domain.getName();
         this.topLevelDomain = domain.getTopLevelName();
         this.destination = domain.getDestination();
