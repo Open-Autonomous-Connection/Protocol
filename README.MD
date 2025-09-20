@@ -5,6 +5,16 @@ You can easily implement this Protocol via Maven.<br />
 Feel free to join our Discord.
 <br />
 
+## License Notice
+
+This project (OAC) is licensed under the [Open Autonomous Public License (OAPL)](https://github.com/Open-Autonomous-Connection/OAPL/blob/main/LICENSE).
+
+**Third-party components:**
+- *UnlegitLibrary* is authored by the same copyright holder and is used here under a special agreement:  
+  While UnlegitLibrary is generally distributed under the [GNU GPLv3](https://www.gnu.org/licenses/gpl-3.0.html),  
+  it is additionally licensed under OAPL **exclusively for the OAC project**.  
+  Therefore, within OAC, the OAPL terms apply to UnlegitLibrary as well.
+
 # Bugs/Problems
 # In progress
 # TODO
