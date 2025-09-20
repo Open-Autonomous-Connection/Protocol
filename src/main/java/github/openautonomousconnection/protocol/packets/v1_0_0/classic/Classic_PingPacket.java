@@ -1,11 +1,12 @@
 package github.openautonomousconnection.protocol.packets.v1_0_0.classic;
 
 import github.openautonomousconnection.protocol.ProtocolBridge;
-import github.openautonomousconnection.protocol.ProtocolVersion;
-import github.openautonomousconnection.protocol.classic.Classic_Domain;
-import github.openautonomousconnection.protocol.classic.Classic_PingPacketReceivedEvent;
-import github.openautonomousconnection.protocol.classic.Classic_ProtocolVersion;
-import github.openautonomousconnection.protocol.classic.Classic_RequestDomain;
+import github.openautonomousconnection.protocol.packets.v1_0_0.beta.UnsupportedClassicPacket;
+import github.openautonomousconnection.protocol.versions.ProtocolVersion;
+import github.openautonomousconnection.protocol.versions.v1_0_0.classic.Classic_Domain;
+import github.openautonomousconnection.protocol.versions.v1_0_0.classic.Classic_PingPacketReceivedEvent;
+import github.openautonomousconnection.protocol.versions.v1_0_0.classic.Classic_ProtocolVersion;
+import github.openautonomousconnection.protocol.versions.v1_0_0.classic.Classic_RequestDomain;
 import github.openautonomousconnection.protocol.packets.OACPacket;
 import me.finn.unlegitlibrary.network.system.packets.PacketHandler;
 
@@ -31,7 +32,7 @@ public class Classic_PingPacket extends OACPacket {
     }
 
     public Classic_PingPacket() {
-        super(1, ProtocolVersion.ProtocolType.CLASSIC);
+        super(1, ProtocolVersion.PV_1_0_0_CLASSIC);
     }
 
     @Override
@@ -57,6 +58,7 @@ public class Classic_PingPacket extends OACPacket {
 
         reachable = domain != null;
         ProtocolBridge.getInstance().getProtocolServer().getNetworkServer().getEventManager().executeEvent(new Classic_PingPacketReceivedEvent(protocolVersion, domain, requestDomain, reachable, clientID));
-        ProtocolBridge.getInstance().getProtocolServer().getNetworkServer().getConnectionHandlerByID(clientID).sendPacket(new Classic_PingPacket(requestDomain, domain, reachable));
+        if (ProtocolBridge.getInstance().getProtocolServer().getClientByID(clientID).clientSupportClassic()) ProtocolBridge.getInstance().getProtocolServer().getNetworkServer().getConnectionHandlerByID(clientID).sendPacket(new Classic_PingPacket(requestDomain, domain, reachable));
+        else ProtocolBridge.getInstance().getProtocolServer().getNetworkServer().getConnectionHandlerByID(clientID).sendPacket(new UnsupportedClassicPacket(Classic_PingPacket.class, new Object[] {requestDomain, domain, reachable}));
     }
 }

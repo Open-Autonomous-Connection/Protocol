@@ -1,4 +1,4 @@
-package github.openautonomousconnection.protocol;
+package github.openautonomousconnection.protocol.versions;
 
 import lombok.Getter;
 
@@ -25,7 +25,8 @@ public enum ProtocolVersion implements Serializable {
         this.version = version;
         this.protocolType = protocolType;
         this.protocolSide = protocolSide;
-        this.compatibleVersions = new ArrayList<>(Arrays.stream(new ProtocolVersion[] { this }).toList());
+        this.compatibleVersions = new ArrayList<>(Arrays.stream(compatibleVersions).toList());
+        if (!this.compatibleVersions.contains(this)) this.compatibleVersions.add(this);
     }
 
     @Override
@@ -41,10 +42,9 @@ public enum ProtocolVersion implements Serializable {
         return version + "-" + protocolType.toString();
     }
 
-    public enum ProtocolType {
+    public enum ProtocolType implements Serializable {
         CLASSIC, // -> See "_old" Projects on GitHub Organisation https://github.com/Open-Autonomous-Connection/
         BETA,
-        ALPHA,
         STABLE
 
         ;
@@ -55,7 +55,7 @@ public enum ProtocolVersion implements Serializable {
         }
     }
 
-    public enum ProtocolSide {
+    public enum ProtocolSide implements Serializable {
         CLIENT, // Protocol version can only used on Client
         SERVER, // Protocol version can only used on Server
         BOTH // Protocol version can only used on Server and Client

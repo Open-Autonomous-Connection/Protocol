@@ -1,11 +1,12 @@
 package github.openautonomousconnection.protocol.packets.v1_0_0.classic;
 
 import github.openautonomousconnection.protocol.ProtocolBridge;
-import github.openautonomousconnection.protocol.ProtocolVersion;
-import github.openautonomousconnection.protocol.classic.Classic_Domain;
-import github.openautonomousconnection.protocol.classic.Classic_DomainPacketReceivedEvent;
-import github.openautonomousconnection.protocol.classic.Classic_ProtocolVersion;
-import github.openautonomousconnection.protocol.classic.Classic_RequestDomain;
+import github.openautonomousconnection.protocol.packets.v1_0_0.beta.UnsupportedClassicPacket;
+import github.openautonomousconnection.protocol.versions.ProtocolVersion;
+import github.openautonomousconnection.protocol.versions.v1_0_0.classic.Classic_Domain;
+import github.openautonomousconnection.protocol.versions.v1_0_0.classic.Classic_DomainPacketReceivedEvent;
+import github.openautonomousconnection.protocol.versions.v1_0_0.classic.Classic_ProtocolVersion;
+import github.openautonomousconnection.protocol.versions.v1_0_0.classic.Classic_RequestDomain;
 import github.openautonomousconnection.protocol.packets.OACPacket;
 import me.finn.unlegitlibrary.network.system.packets.PacketHandler;
 
@@ -23,12 +24,13 @@ public class Classic_DomainPacket extends OACPacket {
     public Classic_DomainPacket(int toClient, Classic_RequestDomain requestDomain, Classic_Domain domain) {
         this();
         this.clientID = toClient;
+
         this.requestDomain = requestDomain;
         this.domain = domain;
     }
 
     public Classic_DomainPacket() {
-        super(2, ProtocolVersion.ProtocolType.CLASSIC);
+        super(2, ProtocolVersion.PV_1_0_0_CLASSIC);
     }
 
     @Override
@@ -53,6 +55,8 @@ public class Classic_DomainPacket extends OACPacket {
         }
 
         ProtocolBridge.getInstance().getProtocolServer().getNetworkServer().getEventManager().executeEvent(new Classic_DomainPacketReceivedEvent(protocolVersion, domain, requestDomain, clientID));
-        ProtocolBridge.getInstance().getProtocolServer().getNetworkServer().getConnectionHandlerByID(clientID).sendPacket(new Classic_DomainPacket(clientID, requestDomain, domain));
+
+        if (ProtocolBridge.getInstance().getProtocolServer().getClientByID(clientID).clientSupportClassic()) ProtocolBridge.getInstance().getProtocolServer().getNetworkServer().getConnectionHandlerByID(clientID).sendPacket(new Classic_DomainPacket(clientID, requestDomain, domain));
+        else ProtocolBridge.getInstance().getProtocolServer().getNetworkServer().getConnectionHandlerByID(clientID).sendPacket(new UnsupportedClassicPacket(Classic_PingPacket.class, new Object[] {clientID, requestDomain, domain}));
     }
 }

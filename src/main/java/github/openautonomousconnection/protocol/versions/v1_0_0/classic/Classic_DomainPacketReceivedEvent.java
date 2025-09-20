@@ -1,6 +1,5 @@
-package github.openautonomousconnection.protocol.classic;
+package github.openautonomousconnection.protocol.versions.v1_0_0.classic;
 
-import github.openautonomousconnection.protocol.ProtocolVersion;
 import me.finn.unlegitlibrary.event.impl.Event;
 
 public class Classic_DomainPacketReceivedEvent extends Event {

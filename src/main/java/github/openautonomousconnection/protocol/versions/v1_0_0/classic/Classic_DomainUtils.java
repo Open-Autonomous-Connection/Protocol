@@ -1,4 +1,4 @@
-package github.openautonomousconnection.protocol.classic;
+package github.openautonomousconnection.protocol.versions.v1_0_0.classic;
 
 import me.finn.unlegitlibrary.utils.DefaultMethodsOverrider;
 

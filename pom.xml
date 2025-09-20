@@ -6,7 +6,7 @@
 
     <groupId>github.openautonomousconnection</groupId>
     <artifactId>protocol</artifactId>
-    <version>1.0.3-SNAPSHOT</version>
+    <version>1.0.0-BETA.1</version>
     <organization>
         <name>Open Autonomous Connection</name>
         <url>https://open-autonomous-connection.org/</url>
@@ -87,7 +87,7 @@
         <dependency>
             <groupId>me.finn.unlegitlibrary</groupId>
             <artifactId>unlegitlibrary</artifactId>
-            <version>1.5.15</version>
+            <version>1.6.2</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
